@@ -1,0 +1,1335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KredX DTX — MSME Onboarding Design</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #080b09;
+  --bg2: #0f1510;
+  --bg3: #141f18;
+  --card: #141f18;
+  --card2: #1a2820;
+  --teal: #1D9E75;
+  --teal-light: rgba(29,158,117,0.12);
+  --teal-mid: rgba(29,158,117,0.3);
+  --teal-glow: rgba(29,158,117,0.06);
+  --white: #f0f4f2;
+  --muted: #7a9486;
+  --dim: #3d5447;
+  --border: rgba(29,158,117,0.15);
+  --border2: rgba(255,255,255,0.06);
+  --danger: #e05a5a;
+  --warn: #d4883a;
+  --font: 'Space Grotesk', sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100vh;background:var(--bg);color:var(--white);font-family:var(--font);font-size:14px;line-height:1.6}
+a{color:var(--teal);text-decoration:none}
+a:hover{text-decoration:underline;opacity:0.85}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+
+/* ─── HEADER ─── */
+header{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:100}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:15px;letter-spacing:-0.3px}
+.logo-mark{width:28px;height:28px;background:var(--teal);border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff}
+.logo span{color:var(--muted);font-weight:400;font-size:12px;margin-left:4px}
+nav{display:flex;gap:2px}
+.nav-btn{padding:6px 14px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:500;border:none;background:transparent;color:var(--muted);font-family:var(--font);transition:all .2s;letter-spacing:0.2px}
+.nav-btn:hover{color:var(--white);background:var(--teal-light)}
+.nav-btn.active{color:var(--teal);background:var(--teal-light);border:1px solid var(--border)}
+
+/* ─── TABS ─── */
+.tab-content{display:none;min-height:calc(100vh - 56px)}
+.tab-content.active{display:block}
+
+/* ─── UTILITIES ─── */
+.badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:600;padding:3px 8px;border-radius:4px;letter-spacing:0.4px;white-space:nowrap}
+.badge-teal{background:var(--teal-light);color:var(--teal);border:1px solid var(--teal-mid)}
+.badge-warn{background:rgba(212,136,58,0.12);color:var(--warn);border:1px solid rgba(212,136,58,0.3)}
+.badge-red{background:rgba(224,90,90,0.12);color:var(--danger);border:1px solid rgba(224,90,90,0.3)}
+.badge-dim{background:var(--bg3);color:var(--muted);border:1px solid var(--border2)}
+.rbi-link{font-size:10px;font-weight:600;padding:2px 7px;border-radius:3px;background:rgba(29,158,117,0.1);color:var(--teal);border:1px solid rgba(29,158,117,0.25);cursor:pointer;text-decoration:none;display:inline-block;font-family:var(--mono)}
+.rbi-link:hover{background:var(--teal-light);text-decoration:none}
+.card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px 18px;margin-bottom:10px}
+.card-accent{background:var(--teal-light);border-color:var(--teal-mid)}
+.card-warn{background:rgba(212,136,58,0.08);border-color:rgba(212,136,58,0.25)}
+.card-red{background:rgba(224,90,90,0.08);border-color:rgba(224,90,90,0.25)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+h2.sec-title{font-size:22px;font-weight:700;margin-bottom:4px;letter-spacing:-0.5px}
+h3.sec-sub{font-size:13px;color:var(--muted);margin-bottom:20px;font-weight:400}
+.label{font-size:10px;font-weight:600;letter-spacing:0.8px;color:var(--teal);text-transform:uppercase;margin-bottom:6px}
+p.body{font-size:13px;line-height:1.7;color:rgba(240,244,242,0.8)}
+.divider{border:none;border-top:1px solid var(--border2);margin:20px 0}
+.check{color:var(--teal)}
+.cross{color:var(--danger)}
+
+/* ─── SLIDE DECK ─── */
+#tab-ppt{display:none}
+#tab-ppt.active{display:flex;flex-direction:column}
+.slide-shell{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;min-height:calc(100vh - 56px)}
+.slide{width:100%;max-width:900px;min-height:480px;background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:48px 52px;display:none;flex-direction:column;position:relative;overflow:hidden}
+.slide.active{display:flex}
+.slide::before{content:'';position:absolute;top:-80px;right:-80px;width:240px;height:240px;background:radial-gradient(circle,rgba(29,158,117,0.08) 0%,transparent 70%);border-radius:50%;pointer-events:none}
+.slide-num{position:absolute;bottom:20px;right:24px;font-size:11px;color:var(--dim);font-family:var(--mono)}
+.slide-tag{font-size:10px;letter-spacing:1px;font-weight:600;color:var(--teal);text-transform:uppercase;margin-bottom:12px}
+.slide h1{font-size:32px;font-weight:700;line-height:1.2;letter-spacing:-0.8px;margin-bottom:16px}
+.slide h2{font-size:20px;font-weight:600;margin-bottom:14px;letter-spacing:-0.3px}
+.slide p{font-size:14px;color:rgba(240,244,242,0.8);line-height:1.7;margin-bottom:10px}
+.slide ul{padding-left:18px;margin-bottom:12px}
+.slide li{font-size:13px;color:rgba(240,244,242,0.8);margin-bottom:6px;line-height:1.6}
+.slide-controls{display:flex;align-items:center;gap:12px;padding:16px 0 8px}
+.slide-btn{width:38px;height:38px;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--white);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:all .2s;font-family:var(--font)}
+.slide-btn:hover{background:var(--teal-light);border-color:var(--teal)}
+.slide-dots{display:flex;gap:5px;align-items:center}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--dim);transition:all .2s;cursor:pointer}
+.dot.on{background:var(--teal);width:18px;border-radius:3px}
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:16px 0}
+.stat-box{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:14px 12px;text-align:center}
+.stat-num{font-size:24px;font-weight:700;color:var(--teal);font-family:var(--mono)}
+.stat-lbl{font-size:11px;color:var(--muted);margin-top:2px}
+.flow-step{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px}
+.step-circle{width:32px;height:32px;border-radius:50%;background:var(--teal);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
+.step-body h4{font-size:13px;font-weight:600;margin-bottom:2px}
+.step-body p{font-size:12px;color:var(--muted);margin:0}
+.highlight-box{background:var(--teal-light);border:1px solid var(--teal-mid);border-radius:8px;padding:14px 16px;margin:12px 0}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.pill-list{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.pill-item{font-size:11px;padding:4px 10px;background:var(--bg3);border:1px solid var(--border2);border-radius:20px;color:var(--muted)}
+.big-number{font-size:48px;font-weight:700;color:var(--teal);font-family:var(--mono);line-height:1}
+.table-simple{width:100%;border-collapse:collapse;font-size:12px;margin:10px 0}
+.table-simple th{background:var(--bg3);padding:8px 10px;text-align:left;color:var(--teal);font-weight:600;border-bottom:1px solid var(--border)}
+.table-simple td{padding:8px 10px;border-bottom:1px solid var(--border2);color:rgba(240,244,242,0.8);vertical-align:top}
+
+/* ─── PRD ─── */
+.prd-shell{max-width:820px;margin:0 auto;padding:40px 24px}
+.prd-header{border-bottom:2px solid var(--teal);padding-bottom:20px;margin-bottom:32px}
+.prd-meta{display:flex;gap:20px;flex-wrap:wrap;margin-top:10px}
+.prd-meta-item{font-size:11px;color:var(--muted)}<br>
+.prd-section{margin-bottom:36px}
+.prd-section h2{font-size:16px;font-weight:700;color:var(--teal);border-left:3px solid var(--teal);padding-left:12px;margin-bottom:14px;letter-spacing:0.2px}
+.prd-section h3{font-size:14px;font-weight:600;margin:14px 0 8px}
+.prd-section p,.prd-section li{font-size:13px;line-height:1.7;color:rgba(240,244,242,0.85);margin-bottom:6px}
+.prd-section ul,.prd-section ol{padding-left:18px;margin-bottom:10px}
+.req-row{display:flex;gap:12px;align-items:flex-start;padding:10px 12px;background:var(--bg3);border-radius:6px;margin-bottom:6px;border-left:3px solid var(--border)}
+.req-row.must{border-left-color:var(--teal)}
+.req-row.should{border-left-color:var(--warn)}
+.req-row.nice{border-left-color:var(--dim)}
+.req-id{font-family:var(--mono);font-size:10px;color:var(--teal);min-width:52px;font-weight:600;padding-top:1px}
+.req-text{font-size:12px;color:rgba(240,244,242,0.85);line-height:1.6}
+.prd-table{width:100%;border-collapse:collapse;font-size:12px;margin:10px 0}
+.prd-table th{background:var(--card2);padding:9px 11px;text-align:left;color:var(--white);font-weight:600;border:1px solid var(--border)}
+.prd-table td{padding:9px 11px;border:1px solid var(--border2);color:rgba(240,244,242,0.8);vertical-align:top}
+.status-must{color:var(--teal);font-weight:600}
+.status-should{color:var(--warn);font-weight:600}
+.toc{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px 18px;margin-bottom:28px}
+.toc li{font-size:12px;color:var(--muted);margin-bottom:4px;list-style:none}
+.toc li a{color:var(--muted);transition:color .15s}
+.toc li a:hover{color:var(--teal)}
+
+/* ─── WIREFRAMES ─── */
+.wf-shell{padding:24px;max-width:1100px;margin:0 auto}
+.wf-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:20px}
+.wf-frame{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;cursor:pointer;transition:all .2s}
+.wf-frame:hover{border-color:var(--teal);transform:translateY(-2px)}
+.wf-screen{background:#0a0d0b;min-height:280px;padding:16px;position:relative;display:flex;flex-direction:column}
+.wf-statusbar{height:16px;display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.wf-sb-dot{width:32px;height:4px;background:var(--teal);border-radius:2px}
+.wf-sb-time{font-size:9px;color:var(--dim);font-family:var(--mono)}
+.wf-topbar{display:flex;align-items:center;gap:8px;margin-bottom:14px}
+.wf-back{width:20px;height:20px;background:var(--bg3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--muted)}
+.wf-title{font-size:11px;font-weight:600;color:var(--white)}
+.wf-progress{height:2px;background:var(--bg3);border-radius:1px;margin-bottom:14px;overflow:hidden}
+.wf-progress-fill{height:100%;background:var(--teal);border-radius:1px}
+.wf-input{background:var(--bg3);border:1px solid var(--border2);border-radius:6px;padding:8px 10px;margin-bottom:6px;font-size:10px;color:var(--muted)}
+.wf-input.filled{border-color:var(--teal-mid);color:var(--white)}
+.wf-btn{background:var(--teal);color:#fff;border-radius:6px;padding:9px;text-align:center;font-size:11px;font-weight:600;margin-top:auto}
+.wf-btn.secondary{background:var(--bg3);border:1px solid var(--border2);color:var(--muted)}
+.wf-label{font-size:9px;color:var(--muted);margin-bottom:3px;font-weight:500}
+.wf-caption{padding:10px 12px;background:var(--bg2)}
+.wf-cap-title{font-size:12px;font-weight:600;margin-bottom:2px}
+.wf-cap-sub{font-size:11px;color:var(--muted)}
+.wf-badge-row{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px}
+.wf-check{display:flex;align-items:center;gap:6px;padding:5px 0}
+.wf-check-dot{width:14px;height:14px;border-radius:50%;background:var(--teal-light);border:1px solid var(--teal-mid);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:8px;color:var(--teal)}
+.wf-check-txt{font-size:10px;color:rgba(240,244,242,0.7)}
+.wf-icon-circle{width:40px;height:40px;border-radius:50%;background:var(--teal-light);border:1px solid var(--teal-mid);display:flex;align-items:center;justify-content:center;font-size:18px;margin:0 auto 10px}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:200;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal-box{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:24px;max-width:500px;width:90%;max-height:80vh;overflow-y:auto}
+.modal-close{position:absolute;top:14px;right:16px;background:none;border:none;color:var(--muted);cursor:pointer;font-size:20px;font-family:var(--font)}
+.modal-box h3{font-size:16px;font-weight:700;margin-bottom:12px}
+.modal-box p,.modal-box li{font-size:13px;color:rgba(240,244,242,0.8);line-height:1.7}
+.modal-box ul{padding-left:16px;margin-bottom:10px}
+
+/* ─── PROTOTYPE ─── */
+.proto-shell{display:flex;min-height:calc(100vh - 56px)}
+.proto-sidebar{width:220px;background:var(--bg2);border-right:1px solid var(--border);padding:20px 14px;flex-shrink:0;overflow-y:auto}
+.proto-sidebar h4{font-size:10px;letter-spacing:1px;color:var(--muted);text-transform:uppercase;margin-bottom:12px;font-weight:600}
+.proto-step-item{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:6px;cursor:pointer;margin-bottom:2px;transition:all .15s}
+.proto-step-item:hover{background:var(--teal-light)}
+.proto-step-item.active{background:var(--teal-light);border:1px solid var(--teal-mid)}
+.proto-step-item.done .step-icon{background:var(--teal)}
+.proto-step-item.done .step-icon::after{content:'✓';color:#fff}
+.step-icon{width:20px;height:20px;border-radius:50%;background:var(--bg3);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:var(--dim);flex-shrink:0;font-family:var(--mono)}
+.proto-step-item.active .step-icon{background:var(--teal-light);border-color:var(--teal);color:var(--teal)}
+.proto-step-label{font-size:11px;color:var(--muted);font-weight:500}
+.proto-step-item.active .proto-step-label{color:var(--white)}
+.proto-main{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;background:var(--bg)}
+.phone-frame{width:340px;min-height:600px;background:#0a0d0b;border:2px solid var(--border);border-radius:28px;overflow:hidden;box-shadow:0 0 40px rgba(29,158,117,0.08);display:flex;flex-direction:column}
+.phone-notch{height:28px;background:#0a0d0b;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.notch{width:80px;height:18px;background:#141f18;border-radius:0 0 12px 12px;display:flex;align-items:center;justify-content:center;gap:4px}
+.notch-dot{width:5px;height:5px;border-radius:50%;background:var(--dim)}
+.phone-body{flex:1;padding:16px;display:flex;flex-direction:column;overflow:hidden}
+.proto-screen{display:none;flex-direction:column;height:100%;animation:fadeIn .25s ease}
+.proto-screen.active{display:flex}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.proto-progress-bar{height:2px;background:var(--bg3);border-radius:1px;margin-bottom:16px}
+.proto-progress-fill{height:100%;background:var(--teal);border-radius:1px;transition:width .4s ease}
+.proto-hdr{margin-bottom:16px}
+.proto-hdr h3{font-size:16px;font-weight:700;margin-bottom:4px;letter-spacing:-0.3px}
+.proto-hdr p{font-size:12px;color:var(--muted);line-height:1.5}
+.proto-field{margin-bottom:10px}
+.proto-field label{font-size:10px;color:var(--muted);display:block;margin-bottom:4px;font-weight:500;letter-spacing:0.3px}
+.proto-field input,.proto-field select{width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:7px;padding:9px 11px;color:var(--white);font-size:12px;font-family:var(--font);outline:none;transition:border .15s}
+.proto-field input:focus,.proto-field select:focus{border-color:var(--teal)}
+.proto-cta{margin-top:auto;padding-top:12px}
+.proto-btn{width:100%;background:var(--teal);color:#fff;border:none;border-radius:8px;padding:12px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--font);transition:opacity .15s}
+.proto-btn:hover{opacity:0.9}
+.proto-btn:disabled{opacity:0.4;cursor:not-allowed}
+.proto-btn.secondary{background:transparent;border:1px solid var(--border2);color:var(--muted);margin-top:6px}
+.proto-info-box{background:var(--teal-light);border:1px solid var(--teal-mid);border-radius:7px;padding:10px 12px;margin-bottom:10px}
+.proto-info-box p{font-size:11px;line-height:1.6;color:rgba(240,244,242,0.8);margin:0}
+.proto-info-box a{color:var(--teal)}
+.consent-item{display:flex;align-items:flex-start;gap:8px;padding:8px 0;border-bottom:1px solid var(--border2)}
+.consent-item:last-child{border:none}
+.consent-toggle{width:28px;height:16px;background:var(--teal);border-radius:8px;flex-shrink:0;margin-top:1px;position:relative;cursor:pointer}
+.consent-toggle::after{content:'';position:absolute;right:2px;top:2px;width:12px;height:12px;background:#fff;border-radius:50%;transition:right .2s}
+.consent-text{font-size:11px;color:rgba(240,244,242,0.8);line-height:1.5}
+.consent-text a{color:var(--teal);font-size:11px}
+.api-fetch-item{display:flex;align-items:center;gap:8px;padding:7px 10px;background:var(--bg3);border-radius:6px;margin-bottom:5px}
+.fetch-icon{font-size:12px}
+.fetch-text{font-size:11px;color:var(--muted);flex:1}
+.fetch-status{font-size:10px;font-weight:600;color:var(--teal)}
+.fetch-status.loading{color:var(--warn)}
+.waterfall-step{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--border2)}
+.wf-num{width:22px;height:22px;border-radius:50%;background:var(--bg3);border:1px solid var(--border2);font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;color:var(--dim);flex-shrink:0;font-family:var(--mono)}
+.wf-num.active{background:var(--teal-light);border-color:var(--teal);color:var(--teal)}
+.wf-num.done{background:var(--teal);color:#fff;border-color:var(--teal)}
+.wf-step-body{flex:1}
+.wf-step-title{font-size:12px;font-weight:600;margin-bottom:1px}
+.wf-step-desc{font-size:10px;color:var(--muted);line-height:1.5}
+.bank-validated{display:flex;align-items:center;gap:8px;background:var(--teal-light);border:1px solid var(--teal-mid);border-radius:7px;padding:10px 12px;margin-bottom:10px}
+.bank-val-icon{font-size:20px}
+.bank-val-text h4{font-size:12px;font-weight:600}
+.bank-val-text p{font-size:10px;color:var(--muted);margin:0}
+.review-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border2);font-size:11px}
+.review-row .key{color:var(--muted)}
+.review-row .val{font-weight:500;text-align:right}
+.success-anim{text-align:center;padding:20px 0}
+.success-circle{width:64px;height:64px;border-radius:50%;background:var(--teal-light);border:2px solid var(--teal);display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 14px;animation:pulse 1.5s ease-in-out infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(29,158,117,0.3)}50%{box-shadow:0 0 0 10px rgba(29,158,117,0)}}
+.success-title{font-size:18px;font-weight:700;margin-bottom:6px}
+.success-sub{font-size:12px;color:var(--muted);line-height:1.6}
+.proto-right{width:240px;padding:20px 16px;background:var(--bg2);border-left:1px solid var(--border);overflow-y:auto;flex-shrink:0}
+.proto-right h4{font-size:10px;letter-spacing:1px;color:var(--muted);text-transform:uppercase;margin-bottom:10px;font-weight:600}
+.reg-ref{background:var(--bg3);border:1px solid var(--border2);border-radius:7px;padding:10px;margin-bottom:8px}
+.reg-ref h5{font-size:11px;font-weight:600;margin-bottom:4px}
+.reg-ref p{font-size:11px;color:var(--muted);line-height:1.5;margin-bottom:4px}
+.reg-ref a{font-size:10px;color:var(--teal)}
+.time-indicator{display:flex;align-items:center;gap:6px;padding:7px 10px;background:var(--teal-light);border-radius:6px;margin-bottom:12px}
+.time-icon{font-size:14px}
+.time-text{font-size:11px;color:var(--teal);font-weight:600}
+@media(max-width:768px){.grid2,.grid3,.grid4{grid-template-columns:1fr}.stat-grid{grid-template-columns:repeat(2,1fr)}.two-col{grid-template-columns:1fr}.wf-grid{grid-template-columns:1fr}.proto-shell{flex-direction:column}.proto-sidebar,.proto-right{width:100%;border:none}.proto-main{padding:16px}.phone-frame{width:100%;max-width:340px}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-mark">K</div>
+    kred<strong>X</strong> DTX <span>MSME Onboarding Design</span>
+  </div>
+  <nav>
+    <button class="nav-btn active" onclick="switchTab('ppt',this)">📊 Deck</button>
+    <button class="nav-btn" onclick="switchTab('prd',this)">📄 PRD</button>
+    <button class="nav-btn" onclick="switchTab('wf',this)">🖼 Wireframes</button>
+    <button class="nav-btn" onclick="switchTab('proto',this)">▶ Prototype</button>
+  </nav>
+</header>
+
+<!-- ══════════════════════════════════════════
+     TAB 1: SLIDE DECK
+══════════════════════════════════════════ -->
+<div id="tab-ppt" class="tab-content active">
+  <div class="slide-shell">
+    <!-- SLIDE 1: COVER -->
+    <div class="slide active" id="slide-0">
+      <div class="slide-tag">KredX DTX · Product Design</div>
+      <h1>Onboarding Indian MSMEs<br>onto a TReDS Platform</h1>
+      <p>A fully RBI-compliant, digital-first onboarding flow that gets an MSME from sign-up to their first invoice upload in under 20 minutes — without needing to visit a branch or upload a single physical document.</p>
+      <div class="pill-list" style="margin-top:16px">
+        <span class="badge badge-teal">RBI KYC Master Direction 2016</span>
+        <span class="badge badge-teal">TReDS Master Direction 2021</span>
+        <span class="badge badge-teal">Draft TReDS Directions 2026</span>
+        <span class="badge badge-dim">Indian MSMEs Only</span>
+        <span class="badge badge-dim">Digital-First</span>
+      </div>
+      <div class="highlight-box" style="margin-top:20px">
+        <p style="font-size:13px;margin:0"><strong style="color:var(--teal)">One line summary:</strong> Instead of asking businesses to upload 10 documents and wait 3 days, we fetch everything automatically from government databases in under 3 minutes — and the RBI's own evolving rules now support exactly this approach.</p>
+      </div>
+      <div class="slide-num">1 / 10</div>
+    </div>
+
+    <!-- SLIDE 2: PROBLEM -->
+    <div class="slide" id="slide-1">
+      <div class="slide-tag">The Problem</div>
+      <h2>Why do MSMEs avoid TReDS platforms?</h2>
+      <p>MSMEs desperately need working capital — they have invoices but the money takes 60–90 days to arrive. TReDS was built to solve this. But the sign-up process was so painful that most MSMEs gave up.</p>
+      <div class="two-col" style="margin-top:12px">
+        <div>
+          <p class="label">Old onboarding (before this design)</p>
+          <div class="card card-red" style="padding:12px 14px">
+            <p style="font-size:12px;line-height:1.8">❌ Upload 10+ physical documents<br>❌ Wait 3–5 days for manual review<br>❌ Fill the same information across multiple forms<br>❌ Visit branch for video KYC<br>❌ Different process for each business type<br>❌ No save-and-resume — start over if interrupted</p>
+          </div>
+        </div>
+        <div>
+          <p class="label">This design</p>
+          <div class="card card-accent" style="padding:12px 14px">
+            <p style="font-size:12px;line-height:1.8">✅ Enter PAN → we fetch everything else<br>✅ Under 20 min for most businesses<br>✅ Mobile-first, camera-based<br>✅ Instant identity check (no physical visit)<br>✅ Flow adapts to your business type automatically<br>✅ Save and resume anytime, any device</p>
+          </div>
+        </div>
+      </div>
+      <div class="slide-num">2 / 10</div>
+    </div>
+
+    <!-- SLIDE 3: WHAT IS TReDS -->
+    <div class="slide" id="slide-2">
+      <div class="slide-tag">Context</div>
+      <h2>What is TReDS, simply explained?</h2>
+      <p>Imagine you're a small textile supplier. You delivered goods to a big company. They owe you ₹10 lakh, but they'll pay only after 90 days. You need money now. TReDS is a platform where a bank bids to give you ₹9.8 lakh today — and collects ₹10 lakh from the big company later. You get paid immediately. The bank earns the ₹0.2 lakh difference.</p>
+      <div class="highlight-box">
+        <p style="font-size:13px;margin:0">🔑 <strong>Key fact for compliance:</strong> If the big company (buyer) fails to pay, the <strong>bank takes the loss — not you</strong>. This is called "without recourse." Because the MSME seller has no financial risk, the <a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=12163" target="_blank" class="rbi-link">RBI's 2026 Draft TReDS Directions</a> propose that platforms should NOT need to do full bank-level identity checks on sellers.</p>
+      </div>
+      <div class="stat-grid" style="margin-top:14px">
+        <div class="stat-box"><div class="stat-num">$12B+</div><div class="stat-lbl">KredX transaction volume</div></div>
+        <div class="stat-box"><div class="stat-num">65K+</div><div class="stat-lbl">MSMEs on platform</div></div>
+        <div class="stat-box"><div class="stat-num">700+</div><div class="stat-lbl">Corporate buyers</div></div>
+        <div class="stat-box"><div class="stat-num">90 days</div><div class="stat-lbl">Avg payment wait time solved</div></div>
+      </div>
+      <div class="slide-num">3 / 10</div>
+    </div>
+
+    <!-- SLIDE 4: RBI RULE CHANGE -->
+    <div class="slide" id="slide-3">
+      <div class="slide-tag">The Regulatory Shift</div>
+      <h2>The RBI changed the rules — and it helps us move faster</h2>
+      <p>In April 2026, the RBI published <a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=12163" target="_blank" class="rbi-link">Draft TReDS Directions 2026</a> that acknowledges a simple truth: MSMEs' money goes into their existing bank account. That bank already verified who they are. So why verify everything again?</p>
+      <div class="two-col" style="margin-top:12px">
+        <div class="card card-warn" style="padding:12px 14px">
+          <p class="label" style="color:var(--warn)">Before (Old Rule)</p>
+          <p style="font-size:12px;line-height:1.7">Full bank-grade identity verification. Collect every document. Verify all directors. Complex for even a small partnership firm. Could take days.</p>
+        </div>
+        <div class="card card-accent" style="padding:12px 14px">
+          <p class="label">After (2026 Draft)</p>
+          <p style="font-size:12px;line-height:1.7">Focus on 3 things only: (1) Is this a real, registered business? (2) Does the bank account belong to them? (3) Are the invoices genuine?</p>
+        </div>
+      </div>
+      <div class="card" style="margin-top:10px;padding:12px 14px">
+        <p style="font-size:12px;margin:0">⚠️ <strong>Important:</strong> This is still a <em>draft</em> law — not final yet. So our system is built to work under <strong>both</strong> the old and new rules. A single toggle switches between full-KYC mode and simplified mode. Both are production-ready from Day 1. Reference: <a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=11566" target="_blank" class="rbi-link">KYC Master Direction 2016</a></p>
+      </div>
+      <div class="slide-num">4 / 10</div>
+    </div>
+
+    <!-- SLIDE 5: SOLUTION OVERVIEW -->
+    <div class="slide" id="slide-4">
+      <div class="slide-tag">Our Solution</div>
+      <h2>The core idea: fetch data, don't ask for it</h2>
+      <p>India has incredible government databases. A business's name, address, bank account, and owner details already exist in these systems. Instead of making MSMEs re-type everything, we connect to these databases directly. The user enters two numbers — we do the rest.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:14px">
+        <div class="card" style="padding:12px 14px;text-align:center">
+          <div style="font-size:22px;margin-bottom:6px">📋</div>
+          <p style="font-size:11px;font-weight:700;margin-bottom:4px">User enters PAN</p>
+          <p style="font-size:11px;color:var(--muted)">We fetch: business name, type, tax status</p>
+          <p style="font-size:10px;color:var(--teal);margin-top:6px">→ <a href="https://www.incometaxindia.gov.in/pages/tools/pan-verification.aspx" target="_blank" style="color:var(--teal)">ITD PAN API</a></p>
+        </div>
+        <div class="card" style="padding:12px 14px;text-align:center">
+          <div style="font-size:22px;margin-bottom:6px">🏭</div>
+          <p style="font-size:11px;font-weight:700;margin-bottom:4px">User enters Udyam No.</p>
+          <p style="font-size:11px;color:var(--muted)">We fetch: MSME classification, industry, address, bank account</p>
+          <p style="font-size:10px;color:var(--teal);margin-top:6px">→ <a href="https://udyamregistration.gov.in/" target="_blank" style="color:var(--teal)">Udyam Verify API</a></p>
+        </div>
+        <div class="card" style="padding:12px 14px;text-align:center">
+          <div style="font-size:22px;margin-bottom:6px">🪪</div>
+          <p style="font-size:11px;font-weight:700;margin-bottom:4px">Person's CKYC ID</p>
+          <p style="font-size:11px;color:var(--muted)">We fetch: identity, address, photo — from bank records</p>
+          <p style="font-size:10px;color:var(--teal);margin-top:6px">→ <a href="https://www.ckycindia.in/" target="_blank" style="color:var(--teal)">CKYCR Registry API</a> · <a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=11566" target="_blank" style="color:var(--teal)">§56</a></p>
+        </div>
+      </div>
+      <div class="highlight-box" style="margin-top:12px">
+        <p style="font-size:13px;margin:0">Result: a typical proprietorship onboards in <strong>10–15 minutes</strong>. A Pvt Ltd with 2 directors takes <strong>20–30 minutes</strong>. Zero physical document uploads in most cases.</p>
+      </div>
+      <div class="slide-num">5 / 10</div>
+    </div>
+
+    <!-- SLIDE 6: 5-PHASE FLOW -->
+    <div class="slide" id="slide-5">
+      <div class="slide-tag">The Flow</div>
+      <h2>5 phases from sign-up to first invoice</h2>
+      <div class="flow-step">
+        <div class="step-circle">1</div>
+        <div class="step-body">
+          <h4>Verify your phone &amp; give consent</h4>
+          <p>OTP on mobile → you say yes to which databases we can check · <a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=11566" target="_blank" class="rbi-link">§16 KYC MD</a> · ~60 seconds</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-circle">2</div>
+        <div class="step-body">
+          <h4>Tell us your PAN and Udyam number</h4>
+          <p>We auto-fill everything else from government APIs · <a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=11566" target="_blank" class="rbi-link">§19–33 KYC MD</a> · ~2 min</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-circle">3</div>
+        <div class="step-body">
+          <h4>Verify who you are (person, not just company)</h4>
+          <p>CKYC → Aadhaar OTP → Upload ID → Video call (in that order, stop at first that works) · <a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=11566" target="_blank" class="rbi-link">§18, §18A, §56</a></p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-circle">4</div>
+        <div class="step-body">
+          <h4>Verify your bank account</h4>
+          <p>We send ₹1, your bank tells us your name, we cross-check — 3-way validation · <a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=12163" target="_blank" class="rbi-link">TReDS MD 2021</a> · ~60 seconds</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-circle">5</div>
+        <div class="step-body">
+          <h4>Risk check &amp; digital sign</h4>
+          <p>Automatic low/medium/high risk scoring → eSign with Aadhaar OTP → Account live · <a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=11566" target="_blank" class="rbi-link">§17 KYC MD</a></p>
+        </div>
+      </div>
+      <div class="slide-num">6 / 10</div>
+    </div>
+
+    <!-- SLIDE 7: ENTITY TYPES -->
+    <div class="slide" id="slide-6">
+      <div class="slide-tag">Entity Types</div>
+      <h2>Different businesses → different document needs</h2>
+      <p>The system detects your business type from the PAN API and shows only what's relevant. You never see a confusing menu asking you to "select your entity type."</p>
+      <table class="table-simple" style="margin-top:12px">
+        <thead>
+          <tr><th>Business Type</th><th>Key Documents</th><th>Who gets individually verified?</th><th>Time</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Sole Proprietorship</strong><br><span style="font-size:10px;color:var(--muted)">E.g. Ramesh Trading Co.</span></td><td>PAN + GSTIN (auto) + 1 more ID proof · <a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=11566" target="_blank" class="rbi-link">§33</a></td><td>Proprietor only</td><td>~12 min</td></tr>
+          <tr><td><strong>Partnership Firm</strong><br><span style="font-size:10px;color:var(--muted)">E.g. Sharma &amp; Sons</span></td><td>PAN + Partnership deed · <a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=11566" target="_blank" class="rbi-link">§25</a></td><td>All managing partners</td><td>~25 min</td></tr>
+          <tr><td><strong>LLP</strong></td><td>PAN + CoI (auto from MCA21) · <a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=11566" target="_blank" class="rbi-link">§26</a></td><td>Designated partners</td><td>~20 min</td></tr>
+          <tr><td><strong>Private Limited Co.</strong></td><td>PAN + CoI + MOA/AOA (auto) · <a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=11566" target="_blank" class="rbi-link">§27</a></td><td>All directors + auth. signatory</td><td>~30 min</td></tr>
+        </tbody>
+      </table>
+      <div class="card card-warn" style="margin-top:10px;padding:10px 12px">
+        <p style="font-size:12px;margin:0">⚠️ <strong>Updated BO threshold:</strong> Any person owning <strong>10%+ of the business</strong> must also be personally verified. This was previously 25%, but RBI aligned with <a href="https://www.fatf-gafi.org/en/recommendations.html" target="_blank" class="rbi-link">FATF 2023 recommendations</a> and lowered it to 10%. Reference: <a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=11566" target="_blank" class="rbi-link">§22 KYC MD</a></p>
+      </div>
+      <div class="slide-num">7 / 10</div>
+    </div>
+
+    <!-- SLIDE 8: RISK FRAMEWORK -->
+    <div class="slide" id="slide-7">
+      <div class="slide-tag">Risk Framework</div>
+      <h2>Not everyone needs the same level of checking — and the RBI agrees</h2>
+      <p>The RBI <strong>requires</strong> us to apply a risk-based approach — verify more carefully for riskier businesses, go faster for safe ones. Reference: <a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=11566" target="_blank" class="rbi-link">§17 KYC Master Direction</a></p>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:12px">
+        <div class="card card-accent" style="padding:12px 14px">
+          <div class="badge badge-teal" style="margin-bottom:8px">LOW RISK</div>
+          <p style="font-size:12px;font-weight:600;margin-bottom:6px">Most TReDS MSMEs</p>
+          <p style="font-size:11px;color:var(--muted);line-height:1.6">Consistent GST filing, mainstream industry, registered for 2+ years. → Simplified checks. Auto-approved in &lt;2 hours. Re-verify every 10 years.</p>
+        </div>
+        <div class="card card-warn" style="padding:12px 14px">
+          <div class="badge badge-warn" style="margin-bottom:8px">MEDIUM RISK</div>
+          <p style="font-size:12px;font-weight:600;margin-bottom:6px">Complex structures</p>
+          <p style="font-size:11px;color:var(--muted);line-height:1.6">Newer business, irregular GST, complex partnership. → Standard checks. Compliance review 4–8 hours. Re-verify every 8 years.</p>
+        </div>
+        <div class="card card-red" style="padding:12px 14px">
+          <div class="badge badge-red" style="margin-bottom:8px">HIGH RISK</div>
+          <p style="font-size:12px;font-weight:600;margin-bottom:6px">Rare edge cases</p>
+          <p style="font-size:11px;color:var(--muted);line-height:1.6">Precious metals/gems dealer, PEP connection, flagged on sanctions lists. → Enhanced Due Diligence. Manual review 24–48 hours. Re-verify every 2 years.</p>
+        </div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:10px">Risk inputs: Industry NIC code (from <a href="https://udyamregistration.gov.in/" target="_blank" class="rbi-link">Udyam API</a>), GST compliance history (from <a href="https://www.gstn.org.in/" target="_blank" class="rbi-link">GSTN API</a>), sanctions screening (UN/OFAC/RBI lists), adverse news API, PEP check</p>
+      <div class="slide-num">8 / 10</div>
+    </div>
+
+    <!-- SLIDE 9: TECH STACK -->
+    <div class="slide" id="slide-8">
+      <div class="slide-tag">Technology</div>
+      <h2>Every API we use and why</h2>
+      <table class="table-simple">
+        <thead><tr><th>API / System</th><th>What we fetch</th><th>Why this source</th></tr></thead>
+        <tbody>
+          <tr><td><a href="https://www.incometaxindia.gov.in/" target="_blank" class="rbi-link">ITD PAN API</a></td><td>Business name, type, active status</td><td>Government source — authoritative, cannot be faked</td></tr>
+          <tr><td><a href="https://udyamregistration.gov.in/" target="_blank" class="rbi-link">Udyam Verify API</a></td><td>MSME class, industry, address, bank account ref</td><td>Mandatory eligibility check per <a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=12163" target="_blank" class="rbi-link">TReDS MD</a>. Gives us a govt-verified bank account to cross-check.</td></tr>
+          <tr><td><a href="https://www.gstn.org.in/" target="_blank" class="rbi-link">GSTN API</a></td><td>GST registration status, filing history, address</td><td>Proves the business is actively operating and tax-compliant</td></tr>
+          <tr><td><a href="https://www.ckycindia.in/" target="_blank" class="rbi-link">CKYCR (CERSAI)</a></td><td>Verified individual identity from bank records</td><td>Mandatory first step per <a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=11566" target="_blank" class="rbi-link">§56 KYC MD</a>. Instant. No documents needed.</td></tr>
+          <tr><td><a href="https://uidai.gov.in/" target="_blank" class="rbi-link">UIDAI eKYC</a></td><td>Aadhaar-verified identity + address</td><td>Fallback if CKYC not found. OTP-based. Compliant per <a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=11566" target="_blank" class="rbi-link">§18(b) KYC MD</a></td></tr>
+          <tr><td><a href="https://www.mca.gov.in/" target="_blank" class="rbi-link">MCA21 API</a></td><td>Certificate of Incorporation, director list, shareholding</td><td>Auto-fetches company documents — no upload needed</td></tr>
+          <tr><td><a href="https://www.digilocker.gov.in/" target="_blank" class="rbi-link">DigiLocker API</a></td><td>MOA/AOA, Aadhaar XML, Driving Licence</td><td>Government-issued digital documents — legally equivalent to originals</td></tr>
+          <tr><td><a href="https://sahamati.org.in/" target="_blank" class="rbi-link">Account Aggregator</a></td><td>Bank statement data (consent-based)</td><td>Tamper-proof structured data. Helps financiers bid better rates for the MSME.</td></tr>
+        </tbody>
+      </table>
+      <div class="slide-num">9 / 10</div>
+    </div>
+
+    <!-- SLIDE 10: METRICS -->
+    <div class="slide" id="slide-9">
+      <div class="slide-tag">Success Metrics</div>
+      <h2>How we know this is working</h2>
+      <p>These are the numbers we track weekly. The first two are the most important — they directly reflect whether the design is working for real MSMEs.</p>
+      <div class="stat-grid">
+        <div class="stat-box"><div class="stat-num">&lt;20m</div><div class="stat-lbl">Time from sign-up to active account (target P50)</div></div>
+        <div class="stat-box"><div class="stat-num">&gt;80%</div><div class="stat-lbl">Applications approved without any human review</div></div>
+        <div class="stat-box"><div class="stat-num">&lt;15%</div><div class="stat-lbl">Users who drop off before submitting</div></div>
+        <div class="stat-box"><div class="stat-num">&lt;5%</div><div class="stat-lbl">Applications rejected by compliance team</div></div>
+      </div>
+      <table class="table-simple" style="margin-top:14px">
+        <thead><tr><th>Metric</th><th>Target</th><th>Why it matters</th></tr></thead>
+        <tbody>
+          <tr><td>CKYC hit rate</td><td>&gt;50% of individuals</td><td>Higher hit rate = faster onboarding for most users. If low, we investigate why.</td></tr>
+          <tr><td>Aadhaar eKYC adoption</td><td>&gt;70% of individuals</td><td>Shows the fast path is working; low adoption means V-CIP bottleneck.</td></tr>
+          <tr><td>Manual review TAT</td><td>&lt;8 hours (medium risk)</td><td>Even the non-auto path should be fast for MSMEs.</td></tr>
+          <tr><td>KYC refresh completion rate</td><td>&gt;90% before expiry</td><td>Per <a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=11566" target="_blank" class="rbi-link">§38 KYC MD</a> — accounts are restricted if not refreshed. Affects MSME's ability to use platform.</td></tr>
+        </tbody>
+      </table>
+      <div class="slide-num">10 / 10</div>
+    </div>
+
+    <!-- SLIDE CONTROLS -->
+    <div class="slide-controls">
+      <button class="slide-btn" onclick="prevSlide()">←</button>
+      <div class="slide-dots" id="dots"></div>
+      <button class="slide-btn" onclick="nextSlide()">→</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     TAB 2: PRD
+══════════════════════════════════════════ -->
+<div id="tab-prd" class="tab-content">
+<div class="prd-shell">
+  <div class="prd-header">
+    <p class="label">Product Requirements Document</p>
+    <h1 style="font-size:24px;font-weight:700;letter-spacing:-0.5px">MSME Onboarding Flow — KredX DTX (TReDS)</h1>
+    <div class="prd-meta">
+      <span style="font-size:11px;color:var(--muted)">Version: 1.0</span>
+      <span style="font-size:11px;color:var(--muted)">Platform: TReDS (DTX)</span>
+      <span style="font-size:11px;color:var(--muted)">Scope: Indian MSMEs — Seller onboarding</span>
+      <span style="font-size:11px;color:var(--muted)">Regulatory basis: <a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=11566" target="_blank" class="rbi-link">KYC MD 2016</a> · <a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=12163" target="_blank" class="rbi-link">TReDS MD 2021</a> · <a href="https://enforcementdirectorate.gov.in/pmla" target="_blank" class="rbi-link">PMLA 2002</a></span>
+    </div>
+  </div>
+
+  <div class="toc">
+    <p class="label" style="margin-bottom:8px">Contents</p>
+    <ol class="toc" style="padding-left:16px">
+      <li><a href="#prd-1">1. Overview</a></li>
+      <li><a href="#prd-2">2. Problem Statement</a></li>
+      <li><a href="#prd-3">3. Goals &amp; Non-Goals</a></li>
+      <li><a href="#prd-4">4. Users &amp; Personas</a></li>
+      <li><a href="#prd-5">5. Regulatory Constraints</a></li>
+      <li><a href="#prd-6">6. Functional Requirements</a></li>
+      <li><a href="#prd-7">7. Non-Functional Requirements</a></li>
+      <li><a href="#prd-8">8. API &amp; Integration Requirements</a></li>
+      <li><a href="#prd-9">9. Success Metrics</a></li>
+      <li><a href="#prd-10">10. Risks &amp; Mitigations</a></li>
+      <li><a href="#prd-11">11. Assumptions</a></li>
+      <li><a href="#prd-12">12. Out of Scope</a></li>
+    </ol>
+  </div>
+
+  <div class="prd-section" id="prd-1">
+    <h2>1. Overview</h2>
+    <p>This document defines the product requirements for onboarding Micro, Small, and Medium Enterprises (MSMEs) as invoice sellers onto KredX's DTX platform — a TReDS (Trade Receivables Discounting System) licensed by the Reserve Bank of India.</p>
+    <p>TReDS allows MSMEs to sell their unpaid invoices to banks and financiers, getting cash immediately instead of waiting 60–90 days. The onboarding flow is the first experience every MSME has with DTX. If it is confusing or slow, they leave. If it is fast and clear, they stay and grow with the platform.</p>
+    <div class="card card-accent" style="padding:12px 14px">
+      <p style="font-size:13px;margin:0"><strong style="color:var(--teal)">Design north star:</strong> An MSME owner with a 5th-grade education should be able to complete onboarding on their phone in under 20 minutes, without calling customer support.</p>
+    </div>
+  </div>
+
+  <div class="prd-section" id="prd-2">
+    <h2>2. Problem Statement</h2>
+    <p>Indian MSMEs face a severe cash-flow problem: they deliver goods and services but wait months to be paid. TReDS was built to solve this. However, platform adoption has been low because the onboarding process itself is a barrier.</p>
+    <h3>Root causes of drop-off</h3>
+    <ul>
+      <li>Users are asked to manually upload 10+ documents — many don't know what these documents are</li>
+      <li>The same information is requested multiple times in different forms</li>
+      <li>There's no clear indication of progress or how long it will take</li>
+      <li>If interrupted, users must start over — there's no save-and-resume</li>
+      <li>The process doesn't adapt to the user's business type — a sole proprietor sees the same complex form as a large company</li>
+      <li>Manual review adds 2–5 business days of wait time</li>
+    </ul>
+    <div class="card card-warn" style="padding:10px 12px">
+      <p style="font-size:12px;margin:0">💡 <strong>Insight:</strong> All the information MSMEs are asked to upload already exists in government databases (Udyam, GSTN, MCA21, PAN). The real problem is that platforms haven't built the API connections to fetch it automatically.</p>
+    </div>
+  </div>
+
+  <div class="prd-section" id="prd-3">
+    <h2>3. Goals &amp; Non-Goals</h2>
+    <h3>Goals</h3>
+    <ul>
+      <li>Reduce median onboarding time from 3–5 days to under 20 minutes</li>
+      <li>Achieve &gt;80% straight-through approval (no human review needed)</li>
+      <li>Maintain 100% compliance with <a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=11566" target="_blank" class="rbi-link">RBI KYC Master Direction 2016</a>, <a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=12163" target="_blank" class="rbi-link">TReDS MD 2021</a>, and <a href="https://enforcementdirectorate.gov.in/pmla" target="_blank" class="rbi-link">PMLA 2002</a></li>
+      <li>Support all 4 MSME legal entity types (Proprietorship, Partnership, LLP, Pvt Ltd)</li>
+      <li>Make the flow usable on a mid-range Android phone on a 3G connection</li>
+      <li>Support save-and-resume across devices</li>
+      <li>Build a modular architecture that can toggle between simplified (2026 draft) and full CDD mode</li>
+    </ul>
+    <h3>Non-Goals</h3>
+    <ul>
+      <li>Onboarding corporate buyers or financiers (separate flows, separate document)</li>
+      <li>Onboarding MSMEs from outside India</li>
+      <li>Credit assessment or invoice limit setting (post-onboarding feature)</li>
+      <li>Support for informal enterprises without any Udyam registration (flagged for UAP-assisted registration first)</li>
+    </ul>
+  </div>
+
+  <div class="prd-section" id="prd-4">
+    <h2>4. Users &amp; Personas</h2>
+    <table class="prd-table">
+      <thead><tr><th>Persona</th><th>Who they are</th><th>Their biggest pain</th><th>What success looks like</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Ramesh</strong><br><span style="color:var(--muted);font-size:10px">Proprietor, auto-parts supplier, Ludhiana. Limited digital literacy. Aadhaar-linked phone.</span></td><td>Runs a 1-person firm. Submits invoices to a large car manufacturer. Needs ₹5L now, will get it in 90 days.</td><td>Doesn't know what "Partnership deed" or "MOA" means. Gives up when asked to upload documents.</td><td>Completes onboarding in 12 minutes on his phone. Never asked for a document he doesn't understand.</td></tr>
+        <tr><td><strong>Priya</strong><br><span style="color:var(--muted);font-size:10px">CFO of a 3-partner food ingredient firm, Pune. Has CA on call. Comfortable with digital.</span></td><td>Needs all 3 partners to complete KYC. Worried about which partner's documents are needed.</td><td>Sequential partner KYC means the process takes 3 days if partners are in different cities.</td><td>All 3 partners get simultaneous KYC links. Onboarding complete in 25 minutes despite geographic split.</td></tr>
+        <tr><td><strong>Amit</strong><br><span style="color:var(--muted);font-size:10px">Director of a textile exporter Pvt Ltd, Surat. 2 directors, 3 shareholders. Referred by anchor corporate.</span></td><td>Complex shareholding. Needs to declare beneficial owners accurately. Has DSC and DigiLocker.</td><td>Unclear which shareholders need KYC (old 25% threshold vs new 10% threshold creates confusion).</td><td>System auto-fetches director list from MCA21. Clearly explains the 10% BO rule in plain language.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="prd-section" id="prd-5">
+    <h2>5. Regulatory Constraints (Non-Negotiable)</h2>
+    <p>These are not optional features — they are legal obligations. Any change to these requires a compliance sign-off, not just a product decision.</p>
+    <table class="prd-table">
+      <thead><tr><th>Requirement</th><th>Regulatory Source</th><th>What it means in plain English</th></tr></thead>
+      <tbody>
+        <tr><td>Customer Acceptance Policy</td><td><a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=11566" target="_blank" class="rbi-link">§16 KYC MD</a></td><td>No anonymous accounts. No account activated until KYC is complete.</td></tr>
+        <tr><td>Risk categorisation</td><td><a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=11566" target="_blank" class="rbi-link">§17 KYC MD</a></td><td>Every MSME must be rated Low / Medium / High risk. Level of checking must match the rating.</td></tr>
+        <tr><td>Check CKYC first</td><td><a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=11566" target="_blank" class="rbi-link">§56 KYC MD</a></td><td>Before asking someone to redo their identity verification, check if it's already in the <a href="https://www.ckycindia.in/" target="_blank" class="rbi-link">central registry</a>.</td></tr>
+        <tr><td>Video KYC rules</td><td><a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=11566" target="_blank" class="rbi-link">§18A KYC MD</a></td><td>Video must be live, recorded, stored on KredX's own servers. No Zoom/Teams. Facial gestures NOT mandatory (for accessibility, per 2025 update).</td></tr>
+        <tr><td>Beneficial Owner (BO) rule</td><td><a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=11566" target="_blank" class="rbi-link">§22 KYC MD</a> · <a href="https://www.fatf-gafi.org/en/recommendations.html" target="_blank" class="rbi-link">FATF 2023</a></td><td>Anyone who owns 10%+ of the business must be personally verified. (This was 25% — it was reduced to 10%.)</td></tr>
+        <tr><td>Record keeping</td><td><a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=11566" target="_blank" class="rbi-link">§45 KYC MD</a> · <a href="https://enforcementdirectorate.gov.in/pmla" target="_blank" class="rbi-link">PMLA 2002</a></td><td>All KYC documents must be stored securely for at least 5 years.</td></tr>
+        <tr><td>Periodic KYC renewal</td><td><a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=11566" target="_blank" class="rbi-link">§38 KYC MD</a></td><td>Low risk: renew every 10 years. Medium: 8 years. High: 2 years. Platform must restrict account if not renewed.</td></tr>
+        <tr><td>Sanctions screening</td><td><a href="https://enforcementdirectorate.gov.in/pmla" target="_blank" class="rbi-link">PMLA 2002</a></td><td>Check every new MSME and owner against UN/OFAC/RBI sanctions lists before activation.</td></tr>
+        <tr><td>Udyam mandatory</td><td><a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=12163" target="_blank" class="rbi-link">TReDS MD 2021</a></td><td>Only businesses with a valid <a href="https://udyamregistration.gov.in/" target="_blank" class="rbi-link">Udyam Registration</a> can use TReDS. No exceptions.</td></tr>
+        <tr><td>Aadhaar eKYC consent</td><td><a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=11566" target="_blank" class="rbi-link">§18(b) KYC MD</a></td><td>Must get explicit, written/digital consent before using Aadhaar OTP to verify anyone's identity.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="prd-section" id="prd-6">
+    <h2>6. Functional Requirements</h2>
+    <p><span class="badge badge-teal">MUST</span> = required for launch &nbsp; <span class="badge badge-warn">SHOULD</span> = important, ship in v1.1 &nbsp; <span class="badge badge-dim">NICE</span> = backlog</p>
+
+    <h3>Phase 1 — Authentication &amp; Consent</h3>
+    <div class="req-row must"><span class="req-id">FR-1.1</span><span class="req-text"><span class="badge badge-teal">MUST</span> Verify mobile number via OTP before any onboarding data is collected. Reference: <a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=11566" target="_blank" class="rbi-link">§16 KYC MD</a></span></div>
+    <div class="req-row must"><span class="req-id">FR-1.2</span><span class="req-text"><span class="badge badge-teal">MUST</span> Display a granular digital consent screen listing all third-party APIs to be called (UIDAI, CKYCR, Udyam, GSTN, MCA21). Log consent with timestamp. Reference: <a href="https://www.meity.gov.in/data-protection-framework" target="_blank" class="rbi-link">DPDP Act</a> · <a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=11566" target="_blank" class="rbi-link">§18(b) KYC MD</a></span></div>
+    <div class="req-row must"><span class="req-id">FR-1.3</span><span class="req-text"><span class="badge badge-teal">MUST</span> Issue a unique session token and save-and-resume link via email and SMS after consent. Session must remain valid for 30 days.</span></div>
+
+    <h3>Phase 2 — Entity Verification</h3>
+    <div class="req-row must"><span class="req-id">FR-2.1</span><span class="req-text"><span class="badge badge-teal">MUST</span> Verify PAN via <a href="https://www.incometaxindia.gov.in/" target="_blank" class="rbi-link">ITD API</a> and return entity name, entity type, and active status. Entity type must drive all downstream branching without user input.</span></div>
+    <div class="req-row must"><span class="req-id">FR-2.2</span><span class="req-text"><span class="badge badge-teal">MUST</span> Verify Udyam Registration Number via <a href="https://udyamregistration.gov.in/" target="_blank" class="rbi-link">Udyam API</a>. Fetch enterprise type, NIC codes, address, and bank account reference. Reject if Udyam not active. Reference: <a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=12163" target="_blank" class="rbi-link">TReDS MD 2021</a></span></div>
+    <div class="req-row must"><span class="req-id">FR-2.3</span><span class="req-text"><span class="badge badge-teal">MUST</span> Run fuzzy name match between PAN name, Udyam name, and GSTN name. Auto-approve if confidence ≥85%. Route to manual review if 70–84%. Reject if &lt;70%. All thresholds configurable without code deploy.</span></div>
+    <div class="req-row must"><span class="req-id">FR-2.4</span><span class="req-text"><span class="badge badge-teal">MUST</span> Fetch GSTIN from PAN via <a href="https://www.gstn.org.in/" target="_blank" class="rbi-link">GSTN API</a>. Verify active registration, principal address, and filing compliance history (last 12 months).</span></div>
+    <div class="req-row must"><span class="req-id">FR-2.5</span><span class="req-text"><span class="badge badge-teal">MUST</span> For Pvt Ltd and LLP: auto-fetch Certificate of Incorporation from <a href="https://www.mca.gov.in/" target="_blank" class="rbi-link">MCA21 API</a> using CIN. No upload required. Reference: <a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=11566" target="_blank" class="rbi-link">§26–27 KYC MD</a></span></div>
+    <div class="req-row should"><span class="req-id">FR-2.6</span><span class="req-text"><span class="badge badge-warn">SHOULD</span> Detect informal enterprises (no GST, no formal Udyam) and redirect them to <a href="https://udyamassist.gov.in/" target="_blank" class="rbi-link">Udyam Assist Platform</a> in-flow to obtain a UAP certificate before proceeding.</span></div>
+
+    <h3>Phase 3 — Individual KYC</h3>
+    <div class="req-row must"><span class="req-id">FR-3.1</span><span class="req-text"><span class="badge badge-teal">MUST</span> Attempt CKYCR lookup as the first and mandatory step for every individual KYC. Search by 14-digit CKYC ID or PAN + DOB. Reference: <a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=11566" target="_blank" class="rbi-link">§56 KYC MD</a> — this is not optional.</span></div>
+    <div class="req-row must"><span class="req-id">FR-3.2</span><span class="req-text"><span class="badge badge-teal">MUST</span> If CKYC not found: offer Aadhaar OTP eKYC with explicit consent screen. Integrate with <a href="https://uidai.gov.in/" target="_blank" class="rbi-link">UIDAI eKYC API</a>. Requires UIDAI authorization (KUA/AUA sub-entity). Reference: <a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=11566" target="_blank" class="rbi-link">§18(b) KYC MD</a></span></div>
+    <div class="req-row must"><span class="req-id">FR-3.3</span><span class="req-text"><span class="badge badge-teal">MUST</span> If Aadhaar eKYC fails: allow OVD upload (Passport/DL/Voter ID) with camera capture and AI liveness detection via approved KYC tech partner. Data must be stored on KredX servers — not vendor servers.</span></div>
+    <div class="req-row must"><span class="req-id">FR-3.4</span><span class="req-text"><span class="badge badge-teal">MUST</span> Implement Video KYC (V-CIP) as final fallback. Must comply strictly with <a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=11566" target="_blank" class="rbi-link">§18A KYC MD</a>: live video, GPS geo-tag, E2E encryption, recorded on KredX servers, concurrent audit. NO mandatory facial gestures (2025 PwD update).</span></div>
+    <div class="req-row must"><span class="req-id">FR-3.5</span><span class="req-text"><span class="badge badge-teal">MUST</span> For entities with multiple individuals (Pvt Ltd directors, LLP partners): send KYC links simultaneously to all, not sequentially. Entity activation waits for all to complete, but clock runs in parallel.</span></div>
+    <div class="req-row must"><span class="req-id">FR-3.6</span><span class="req-text"><span class="badge badge-teal">MUST</span> Identify and verify all Beneficial Owners with ≥10% ownership stake. Reference: <a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=11566" target="_blank" class="rbi-link">§22 KYC MD</a> · <a href="https://www.fatf-gafi.org/en/recommendations.html" target="_blank" class="rbi-link">FATF 2023</a>. For Pvt Ltd: auto-fetch shareholder data from <a href="https://www.mca.gov.in/" target="_blank" class="rbi-link">MCA21</a>. For partnerships: self-declaration backed by digital undertaking.</span></div>
+
+    <h3>Phase 4 — Bank Validation</h3>
+    <div class="req-row must"><span class="req-id">FR-4.1</span><span class="req-text"><span class="badge badge-teal">MUST</span> Validate bank account via penny drop (IMPS). Cross-match returned beneficiary name against (1) PAN entity name and (2) bank account on Udyam certificate — 3-way validation. Reference: <a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=12163" target="_blank" class="rbi-link">TReDS MD 2021 — fund destination verification</a></span></div>
+    <div class="req-row should"><span class="req-id">FR-4.2</span><span class="req-text"><span class="badge badge-warn">SHOULD</span> Offer optional <a href="https://sahamati.org.in/" target="_blank" class="rbi-link">Account Aggregator</a> consent to share bank statement data. This is an enhancement, not a gate. MSMEs who consent get priority financier attention and better discount rates.</span></div>
+
+    <h3>Phase 5 — Risk, Agreement &amp; Activation</h3>
+    <div class="req-row must"><span class="req-id">FR-5.1</span><span class="req-text"><span class="badge badge-teal">MUST</span> Run automated risk scoring using NIC code, GST compliance rate, enterprise age, geography, and sanctions screening. Assign Low/Medium/High. Reference: <a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=11566" target="_blank" class="rbi-link">§17 KYC MD</a></span></div>
+    <div class="req-row must"><span class="req-id">FR-5.2</span><span class="req-text"><span class="badge badge-teal">MUST</span> Screen every entity and individual against UN/OFAC/RBI sanctions lists. Block activation on any match. Reference: <a href="https://enforcementdirectorate.gov.in/pmla" target="_blank" class="rbi-link">PMLA 2002</a></span></div>
+    <div class="req-row must"><span class="req-id">FR-5.3</span><span class="req-text"><span class="badge badge-teal">MUST</span> Collect three specific digital undertakings: (1) invoices are genuine, (2) no double-financing, (3) funds to go to verified account. Executed via Aadhaar eSign (preferred) or DSC. Reference: <a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=12163" target="_blank" class="rbi-link">2026 Draft TReDS Directions</a></span></div>
+    <div class="req-row must"><span class="req-id">FR-5.4</span><span class="req-text"><span class="badge badge-teal">MUST</span> Low risk + all API confidence scores pass → auto-approve within 2 hours. Medium risk → compliance queue, target 4–8 hours. High risk → EDD + manual review, target 24–48 hours.</span></div>
+    <div class="req-row must"><span class="req-id">FR-5.5</span><span class="req-text"><span class="badge badge-teal">MUST</span> Store all KYC documents and consent records for minimum 5 years, encrypted, with audit trail. Reference: <a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=11566" target="_blank" class="rbi-link">§45 KYC MD</a> · <a href="https://enforcementdirectorate.gov.in/pmla" target="_blank" class="rbi-link">PMLA 2002</a></span></div>
+  </div>
+
+  <div class="prd-section" id="prd-7">
+    <h2>7. Non-Functional Requirements</h2>
+    <div class="req-row must"><span class="req-id">NFR-1</span><span class="req-text"><span class="badge badge-teal">MUST</span> All API calls must complete within 5 seconds or display a progress indicator. API timeout must not reset user progress — save state and retry asynchronously.</span></div>
+    <div class="req-row must"><span class="req-id">NFR-2</span><span class="req-text"><span class="badge badge-teal">MUST</span> Mobile-first design. Must load on mid-range Android (2GB RAM) on 3G connection. Total page weight &lt;1MB. Tested on Chrome Android 10+.</span></div>
+    <div class="req-row must"><span class="req-id">NFR-3</span><span class="req-text"><span class="badge badge-teal">MUST</span> All language must be at a Grade 8 reading level. Regulatory terms (e.g., "Beneficial Owner", "CDD") must have plain-language explanations inline. No jargon without tooltip.</span></div>
+    <div class="req-row must"><span class="req-id">NFR-4</span><span class="req-text"><span class="badge badge-teal">MUST</span> Compliance mode toggle: the system must be configurable to switch between Simplified CDD (2026 draft world) and Full CDD (current KYC MD) via admin flag, without a code deployment.</span></div>
+    <div class="req-row must"><span class="req-id">NFR-5</span><span class="req-text"><span class="badge badge-teal">MUST</span> All data encrypted at rest (AES-256) and in transit (TLS 1.3). V-CIP video stored on KredX-owned infrastructure only. Reference: <a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=11566" target="_blank" class="rbi-link">§18A KYC MD</a></span></div>
+    <div class="req-row should"><span class="req-id">NFR-6</span><span class="req-text"><span class="badge badge-warn">SHOULD</span> Support regional language UI (Hindi, Marathi, Tamil, Telugu) via i18n framework. English default with language switcher in header.</span></div>
+  </div>
+
+  <div class="prd-section" id="prd-8">
+    <h2>8. API &amp; Integration Requirements</h2>
+    <table class="prd-table">
+      <thead><tr><th>System</th><th>Data fetched</th><th>Regulatory basis</th><th>Priority</th></tr></thead>
+      <tbody>
+        <tr><td><a href="https://www.incometaxindia.gov.in/" target="_blank" class="rbi-link">ITD PAN API</a></td><td>Entity name, type, status</td><td><a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=11566" target="_blank" class="rbi-link">§18 KYC MD</a></td><td class="status-must">MUST</td></tr>
+        <tr><td><a href="https://udyamregistration.gov.in/" target="_blank" class="rbi-link">Udyam Verify API</a></td><td>MSME class, NIC code, address, bank account ref</td><td><a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=12163" target="_blank" class="rbi-link">TReDS MD 2021</a></td><td class="status-must">MUST</td></tr>
+        <tr><td><a href="https://www.gstn.org.in/" target="_blank" class="rbi-link">GSTN / GST Sahay API</a></td><td>GST status, compliance history, address</td><td><a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=11566" target="_blank" class="rbi-link">§33 KYC MD</a> (proprietorship OVD)</td><td class="status-must">MUST</td></tr>
+        <tr><td><a href="https://www.ckycindia.in/" target="_blank" class="rbi-link">CKYCR (CERSAI)</a></td><td>Individual identity, address, photo</td><td><a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=11566" target="_blank" class="rbi-link">§56 KYC MD</a></td><td class="status-must">MUST</td></tr>
+        <tr><td><a href="https://uidai.gov.in/" target="_blank" class="rbi-link">UIDAI eKYC API</a></td><td>Aadhaar-verified identity via OTP</td><td><a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=11566" target="_blank" class="rbi-link">§18(b) KYC MD</a></td><td class="status-must">MUST</td></tr>
+        <tr><td><a href="https://www.mca.gov.in/" target="_blank" class="rbi-link">MCA21 API</a></td><td>CoI, director list, shareholding</td><td><a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=11566" target="_blank" class="rbi-link">§26–27 KYC MD</a></td><td class="status-must">MUST (for LLP/Pvt Ltd)</td></tr>
+        <tr><td><a href="https://www.digilocker.gov.in/" target="_blank" class="rbi-link">DigiLocker API</a></td><td>Aadhaar XML, DL, MOA/AOA</td><td><a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=11566" target="_blank" class="rbi-link">§18A KYC MD</a></td><td class="status-must">MUST</td></tr>
+        <tr><td>Penny Drop / IMPS Bank API</td><td>Bank account beneficiary name validation</td><td><a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=12163" target="_blank" class="rbi-link">TReDS MD — fund destination</a></td><td class="status-must">MUST</td></tr>
+        <tr><td><a href="https://sahamati.org.in/" target="_blank" class="rbi-link">Account Aggregator</a></td><td>Bank statement (consent-based)</td><td>Optional enhancement</td><td class="status-should">SHOULD</td></tr>
+        <tr><td><a href="https://udyamassist.gov.in/" target="_blank" class="rbi-link">Udyam Assist (UAP)</a></td><td>Informal enterprise certificate</td><td>MSME Ministry / SIDBI</td><td class="status-should">SHOULD</td></tr>
+        <tr><td>Sanctions API (UN/OFAC/RBI)</td><td>Sanctions match check</td><td><a href="https://enforcementdirectorate.gov.in/pmla" target="_blank" class="rbi-link">PMLA 2002</a></td><td class="status-must">MUST</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="prd-section" id="prd-9">
+    <h2>9. Success Metrics</h2>
+    <table class="prd-table">
+      <thead><tr><th>Metric</th><th>Target</th><th>Measurement</th><th>Review cadence</th></tr></thead>
+      <tbody>
+        <tr><td>Time-to-activate (P50)</td><td>&lt;20 minutes</td><td>Account creation timestamp → first invoice upload enabled</td><td>Weekly</td></tr>
+        <tr><td>Straight-through approval rate</td><td>&gt;80%</td><td>% submissions auto-approved without human review</td><td>Weekly</td></tr>
+        <tr><td>Drop-off rate</td><td>&lt;15% overall</td><td>% users who start and do not submit</td><td>Daily</td></tr>
+        <tr><td>Per-step drop-off</td><td>&lt;5% per step</td><td>Funnel analysis in analytics dashboard</td><td>Daily</td></tr>
+        <tr><td>CKYC hit rate</td><td>&gt;50% of individuals</td><td>% KYC instances resolved via CKYCR without fresh KYC</td><td>Monthly</td></tr>
+        <tr><td>KYC rejection rate</td><td>&lt;5%</td><td>% applications rejected by compliance team</td><td>Monthly</td></tr>
+        <tr><td>Manual review TAT</td><td>&lt;8 hours (medium risk)</td><td>Submission → decision timestamp for non-STP cases</td><td>Daily</td></tr>
+        <tr><td>Regulatory compliance</td><td>100%</td><td>% applications with complete KYC per entity type (internal audit)</td><td>Real-time</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="prd-section" id="prd-10">
+    <h2>10. Risks &amp; Mitigations</h2>
+    <table class="prd-table">
+      <thead><tr><th>Risk</th><th>Probability</th><th>Impact</th><th>Mitigation</th></tr></thead>
+      <tbody>
+        <tr><td>2026 Draft TReDS Directions not finalized or materially changed</td><td>Medium</td><td>High — simplified flow becomes non-compliant</td><td>Architecture has a compliance mode toggle. Full CDD path is production-ready from Day 1.</td></tr>
+        <tr><td>Government API downtime (Udyam, GSTN, UIDAI)</td><td>Medium</td><td>High — onboarding blocked</td><td>Async retry with exponential backoff. Session state saved at every step. Fallback to manual upload if API down &gt;5 min.</td></tr>
+        <tr><td>Fuzzy matching thresholds too strict → high manual review queue</td><td>High (on launch)</td><td>Medium — slows onboarding, not a compliance risk</td><td>Pre-calibrate on existing 65K MSME dataset. Weekly ops review. All thresholds configurable without code deploy.</td></tr>
+        <tr><td>Fuzzy matching too loose → fraud</td><td>Low</td><td>Very High — compliance and financial risk</td><td>Multi-source 3-way validation (PAN + Udyam + penny drop). Any mismatch routes to manual review, not auto-approve.</td></tr>
+        <tr><td>V-CIP infrastructure not RBI-compliant</td><td>Low (if built correctly)</td><td>Very High — regulatory violation</td><td>V-CIP is Level 4 fallback — volume should be &lt;10% of applications. Full §18A compliance checklist enforced pre-launch.</td></tr>
+        <tr><td>BO declaration is fraudulent (self-declared)</td><td>Low</td><td>High — PMLA violation</td><td>MCA21 cross-verification for Pvt Ltd. Digital undertaking with explicit penalty clause. High-risk flag triggers EDD and manual review of all BO declarations.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="prd-section" id="prd-11">
+    <h2>11. Explicit Assumptions</h2>
+    <ul>
+      <li><strong>A1 — Regulatory:</strong> 2026 RBI Draft TReDS Directions will be formalized without material changes that remove the intent to simplify MSME seller CDD.</li>
+      <li><strong>A2 — Regulatory:</strong> GSTIN certificate qualifies as one of two OVDs for sole proprietorships per <a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=11566" target="_blank" class="rbi-link">§33 KYC MD</a>.</li>
+      <li><strong>A3 — Regulatory:</strong> BO threshold is 10% per updated <a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=11566" target="_blank" class="rbi-link">§22 KYC MD</a> post FATF 2023 alignment.</li>
+      <li><strong>A4 — Technical:</strong> KredX has obtained or will obtain UIDAI authorization for Aadhaar eKYC API access (KUA/AUA sub-entity status) before launch.</li>
+      <li><strong>A5 — Technical:</strong> All government APIs (Udyam, GSTN, CKYCR, MCA21, PAN) are production-accessible with SLAs of &gt;95% uptime.</li>
+      <li><strong>A6 — Technical:</strong> V-CIP infrastructure will be hosted on KredX-owned or exclusively leased cloud infrastructure with full data localization as per <a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=11566" target="_blank" class="rbi-link">§18A KYC MD</a>.</li>
+      <li><strong>A7 — Business:</strong> &gt;90% of TReDS-eligible MSMEs are Low or Medium risk. High-risk sectors (gems, precious metals, real estate brokerage) are a small minority.</li>
+      <li><strong>A8 — Business:</strong> CKYC hit rate for authorized signatories of formal MSMEs will be &gt;50% (based on their prior banking relationships).</li>
+      <li><strong>A9 — Business:</strong> Primary channel for MSME acquisition is anchor corporate referral — these users have higher intent and more data readiness than cold sign-ups.</li>
+    </ul>
+  </div>
+
+  <div class="prd-section" id="prd-12">
+    <h2>12. Out of Scope</h2>
+    <ul>
+      <li>Onboarding corporate buyers or financiers (separate product workstreams)</li>
+      <li>MSMEs from outside India</li>
+      <li>Invoice submission, bidding, and discounting flows (post-onboarding)</li>
+      <li>Credit limit assessment or MSME scoring (post-onboarding, separate ML feature)</li>
+      <li>WhatsApp onboarding bot (listed as future enhancement, not v1 requirement)</li>
+      <li>Re-KYC flow for existing MSMEs (tracked separately; triggered by §38 expiry dates)</li>
+    </ul>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     TAB 3: WIREFRAMES
+══════════════════════════════════════════ -->
+<div id="tab-wf" class="tab-content">
+<div class="wf-shell">
+  <h2 class="sec-title">Wireframes</h2>
+  <h3 class="sec-sub">Click any screen to see full annotation. These represent the mobile-first onboarding flow — 9 screens from start to activation.</h3>
+  <div class="wf-grid">
+
+    <!-- Screen 1 -->
+    <div class="wf-frame" onclick="openModal('m1')">
+      <div class="wf-screen">
+        <div class="wf-statusbar"><div class="wf-sb-dot"></div><div class="wf-sb-time">9:41</div></div>
+        <div style="text-align:center;padding:20px 0 16px">
+          <div style="font-size:28px;font-weight:700;color:var(--teal)">kred<span style="color:var(--white)">X</span></div>
+          <div style="font-size:9px;color:var(--muted);margin-top:3px;letter-spacing:1px">DTX PLATFORM</div>
+        </div>
+        <p style="font-size:12px;font-weight:600;text-align:center;margin-bottom:4px">Get paid faster on your invoices</p>
+        <p style="font-size:10px;color:var(--muted);text-align:center;margin-bottom:20px;line-height:1.5">Sign up in under 20 minutes. No branch visit. No document uploads.</p>
+        <div class="wf-btn">Get Started →</div>
+        <div style="text-align:center;margin-top:8px;font-size:10px;color:var(--muted)">Already have an account? <span style="color:var(--teal)">Log in</span></div>
+      </div>
+      <div class="wf-caption"><div class="wf-cap-title">1. Welcome screen</div><div class="wf-cap-sub">Entry point. Clear value proposition. No jargon.</div></div>
+    </div>
+
+    <!-- Screen 2 -->
+    <div class="wf-frame" onclick="openModal('m2')">
+      <div class="wf-screen">
+        <div class="wf-statusbar"><div class="wf-sb-dot"></div><div class="wf-sb-time">9:42</div></div>
+        <div class="wf-topbar"><div class="wf-back">←</div><div class="wf-title">Verify your mobile</div></div>
+        <div class="wf-progress"><div class="wf-progress-fill" style="width:12%"></div></div>
+        <p style="font-size:10px;color:var(--muted);margin-bottom:14px;line-height:1.5">We'll send a 6-digit code to your phone. This creates your account and helps us contact you during onboarding.</p>
+        <div class="wf-label">Mobile number</div>
+        <div class="wf-input filled">+91 98765 43210</div>
+        <div class="wf-label" style="margin-top:10px">Enter OTP</div>
+        <div style="display:flex;gap:6px;margin-bottom:16px">
+          <div style="flex:1;background:#1a2820;border:1px solid var(--teal-mid);border-radius:6px;height:36px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:var(--teal)">3</div>
+          <div style="flex:1;background:var(--bg3);border:1px solid var(--border2);border-radius:6px;height:36px"></div>
+          <div style="flex:1;background:var(--bg3);border:1px solid var(--border2);border-radius:6px;height:36px"></div>
+          <div style="flex:1;background:var(--bg3);border:1px solid var(--border2);border-radius:6px;height:36px"></div>
+          <div style="flex:1;background:var(--bg3);border:1px solid var(--border2);border-radius:6px;height:36px"></div>
+          <div style="flex:1;background:var(--bg3);border:1px solid var(--border2);border-radius:6px;height:36px"></div>
+        </div>
+        <div style="font-size:9px;color:var(--muted);margin-bottom:14px;text-align:center">Resend code in 28 seconds</div>
+        <div class="wf-btn" style="opacity:0.4">Verify →</div>
+      </div>
+      <div class="wf-caption"><div class="wf-cap-title">2. Mobile OTP</div><div class="wf-cap-sub">First step. Anti-bot. Creates session.</div></div>
+    </div>
+
+    <!-- Screen 3 -->
+    <div class="wf-frame" onclick="openModal('m3')">
+      <div class="wf-screen">
+        <div class="wf-statusbar"><div class="wf-sb-dot"></div><div class="wf-sb-time">9:43</div></div>
+        <div class="wf-topbar"><div class="wf-back">←</div><div class="wf-title">We need your permission</div></div>
+        <div class="wf-progress"><div class="wf-progress-fill" style="width:22%"></div></div>
+        <p style="font-size:10px;color:var(--muted);margin-bottom:10px;line-height:1.5">To verify your business quickly, we need to check these government databases on your behalf. You can say no to any of them.</p>
+        <div class="consent-item"><div class="consent-toggle"></div><div class="consent-text"><strong>Udyam &amp; GSTN</strong> — Check your MSME registration &amp; tax status</div></div>
+        <div class="consent-item"><div class="consent-toggle"></div><div class="consent-text"><strong>PAN database</strong> — Verify your business PAN</div></div>
+        <div class="consent-item"><div class="consent-toggle"></div><div class="consent-text"><strong>CKYC Registry</strong> — Fetch your ID if already verified by a bank</div></div>
+        <div class="consent-item"><div class="consent-toggle"></div><div class="consent-text"><strong>Aadhaar / UIDAI</strong> — Verify your identity via OTP if CKYC not found</div></div>
+        <div class="wf-btn" style="margin-top:12px">I agree, continue →</div>
+      </div>
+      <div class="wf-caption"><div class="wf-cap-title">3. Consent collection</div><div class="wf-cap-sub">Explicit, granular. Each API named clearly. Legally required.</div></div>
+    </div>
+
+    <!-- Screen 4 -->
+    <div class="wf-frame" onclick="openModal('m4')">
+      <div class="wf-screen">
+        <div class="wf-statusbar"><div class="wf-sb-dot"></div><div class="wf-sb-time">9:44</div></div>
+        <div class="wf-topbar"><div class="wf-back">←</div><div class="wf-title">Your business details</div></div>
+        <div class="wf-progress"><div class="wf-progress-fill" style="width:40%"></div></div>
+        <p style="font-size:10px;color:var(--muted);margin-bottom:12px">Enter 2 numbers — we'll auto-fill everything else.</p>
+        <div class="wf-label">Business PAN</div>
+        <div class="wf-input filled">AABCT1234Z</div>
+        <div class="wf-label" style="margin-top:8px">Udyam Registration Number</div>
+        <div class="wf-input filled">UDYAM-MH-01-0012345</div>
+        <div style="background:var(--teal-light);border:1px solid var(--teal-mid);border-radius:6px;padding:8px;margin-top:10px">
+          <div style="font-size:9px;font-weight:600;color:var(--teal);margin-bottom:4px">✓ Auto-filled from government databases</div>
+          <div style="font-size:10px;color:rgba(240,244,242,0.7)">XYZ Textiles Pvt Ltd · Private Limited · Active GST · Small Enterprise</div>
+        </div>
+        <div class="wf-btn" style="margin-top:14px">Looks correct →</div>
+      </div>
+      <div class="wf-caption"><div class="wf-cap-title">4. Business verification</div><div class="wf-cap-sub">2 inputs → everything else auto-fetched. Zero forms.</div></div>
+    </div>
+
+    <!-- Screen 5 -->
+    <div class="wf-frame" onclick="openModal('m5')">
+      <div class="wf-screen">
+        <div class="wf-statusbar"><div class="wf-sb-dot"></div><div class="wf-sb-time">9:46</div></div>
+        <div class="wf-topbar"><div class="wf-back">←</div><div class="wf-title">Verify who you are</div></div>
+        <div class="wf-progress"><div class="wf-progress-fill" style="width:58%"></div></div>
+        <p style="font-size:10px;color:var(--muted);margin-bottom:12px">We need to confirm the identity of the person running this account. We try the fastest option first.</p>
+        <div class="waterfall-step">
+          <div class="wf-num done">✓</div>
+          <div class="wf-step-body"><div class="wf-step-title">CKYC — from your bank records</div><div class="wf-step-desc">Already verified. No action needed. (&lt;30 sec)</div></div>
+        </div>
+        <div class="waterfall-step" style="opacity:0.4">
+          <div class="wf-num">2</div>
+          <div class="wf-step-body"><div class="wf-step-title">Aadhaar OTP</div><div class="wf-step-desc">If CKYC not found</div></div>
+        </div>
+        <div class="waterfall-step" style="opacity:0.4">
+          <div class="wf-num">3</div>
+          <div class="wf-step-body"><div class="wf-step-title">Upload ID document</div><div class="wf-step-desc">If Aadhaar OTP fails</div></div>
+        </div>
+        <div class="waterfall-step" style="opacity:0.4;border:none">
+          <div class="wf-num">4</div>
+          <div class="wf-step-body"><div class="wf-step-title">Video call with our team</div><div class="wf-step-desc">If all above fail</div></div>
+        </div>
+        <div class="wf-btn" style="margin-top:10px">Continue →</div>
+      </div>
+      <div class="wf-caption"><div class="wf-cap-title">5. Individual KYC waterfall</div><div class="wf-cap-sub">Clearly shows which step user is on. Steps 2–4 greyed if not needed.</div></div>
+    </div>
+
+    <!-- Screen 6 -->
+    <div class="wf-frame" onclick="openModal('m6')">
+      <div class="wf-screen">
+        <div class="wf-statusbar"><div class="wf-sb-dot"></div><div class="wf-sb-time">9:48</div></div>
+        <div class="wf-topbar"><div class="wf-back">←</div><div class="wf-title">Link your bank account</div></div>
+        <div class="wf-progress"><div class="wf-progress-fill" style="width:76%"></div></div>
+        <p style="font-size:10px;color:var(--muted);margin-bottom:12px">This is where KredX will send your money when invoices are paid. We'll verify it by sending ₹1 to confirm ownership.</p>
+        <div class="wf-label">Account number</div>
+        <div class="wf-input filled">0012 3456 7890</div>
+        <div class="wf-label" style="margin-top:8px">IFSC code</div>
+        <div class="wf-input filled">HDFC0001234</div>
+        <div class="bank-validated" style="margin-top:12px">
+          <div class="bank-val-icon">✅</div>
+          <div class="bank-val-text"><h4>Account verified</h4><p>Matches: XYZ Textiles Pvt Ltd · HDFC Bank</p></div>
+        </div>
+        <div class="wf-btn">This is correct →</div>
+      </div>
+      <div class="wf-caption"><div class="wf-cap-title">6. Bank account validation</div><div class="wf-cap-sub">Penny drop + 3-way cross-check. Under 60 seconds.</div></div>
+    </div>
+
+    <!-- Screen 7 -->
+    <div class="wf-frame" onclick="openModal('m7')">
+      <div class="wf-screen">
+        <div class="wf-statusbar"><div class="wf-sb-dot"></div><div class="wf-sb-time">9:50</div></div>
+        <div class="wf-topbar"><div class="wf-back">←</div><div class="wf-title">Almost done — review &amp; sign</div></div>
+        <div class="wf-progress"><div class="wf-progress-fill" style="width:90%"></div></div>
+        <p style="font-size:10px;color:var(--muted);margin-bottom:8px">Check everything below before signing.</p>
+        <div class="review-row"><span class="key">Business</span><span class="val">XYZ Textiles Pvt Ltd</span></div>
+        <div class="review-row"><span class="key">PAN</span><span class="val">AABCT1234Z ✓</span></div>
+        <div class="review-row"><span class="key">Risk rating</span><span class="val" style="color:var(--teal)">Low Risk ✓</span></div>
+        <div class="review-row"><span class="key">Bank</span><span class="val">HDFC xxxx7890 ✓</span></div>
+        <div class="review-row" style="border:none"><span class="key">Identity</span><span class="val">CKYC verified ✓</span></div>
+        <div style="background:var(--teal-light);border:1px solid var(--teal-mid);border-radius:6px;padding:8px;margin-top:10px;font-size:10px;color:rgba(240,244,242,0.8)">By signing, you confirm your invoices are genuine and will not be double-financed.</div>
+        <div class="wf-btn" style="margin-top:10px">Sign with Aadhaar OTP →</div>
+      </div>
+      <div class="wf-caption"><div class="wf-cap-title">7. Review &amp; eSign</div><div class="wf-cap-sub">Summary before signing. 3 undertakings captured. Aadhaar eSign.</div></div>
+    </div>
+
+    <!-- Screen 8 -->
+    <div class="wf-frame" onclick="openModal('m8')">
+      <div class="wf-screen">
+        <div class="wf-statusbar"><div class="wf-sb-dot"></div><div class="wf-sb-time">9:52</div></div>
+        <div class="wf-topbar"><div class="wf-back" style="opacity:0">←</div><div class="wf-title">Application submitted</div></div>
+        <div class="wf-progress"><div class="wf-progress-fill" style="width:100%"></div></div>
+        <div class="success-anim" style="margin-top:10px">
+          <div class="success-circle">✓</div>
+          <div class="success-title">You're in the queue!</div>
+          <p class="success-sub">Your application is being reviewed. Low-risk businesses are approved automatically in under 2 hours.</p>
+        </div>
+        <div style="background:var(--bg3);border-radius:8px;padding:10px;margin-top:10px">
+          <div class="wf-check"><div class="wf-check-dot">✓</div><div class="wf-check-txt">Confirmation email sent</div></div>
+          <div class="wf-check"><div class="wf-check-dot">✓</div><div class="wf-check-txt">You'll get an SMS when approved</div></div>
+          <div class="wf-check"><div class="wf-check-dot">✓</div><div class="wf-check-txt">Reference: DTX-2026-087432</div></div>
+        </div>
+      </div>
+      <div class="wf-caption"><div class="wf-cap-title">8. Confirmation</div><div class="wf-cap-sub">Clear expectation of what happens next. SMS + email triggers.</div></div>
+    </div>
+
+    <!-- Screen 9 -->
+    <div class="wf-frame" onclick="openModal('m9')">
+      <div class="wf-screen">
+        <div class="wf-statusbar"><div class="wf-sb-dot"></div><div class="wf-sb-time">11:34</div></div>
+        <div style="padding:4px 0 12px">
+          <div style="font-size:11px;color:var(--muted)">Welcome back,</div>
+          <div style="font-size:15px;font-weight:700">XYZ Textiles Pvt Ltd</div>
+          <div style="display:inline-block;font-size:9px;padding:2px 8px;background:var(--teal-light);color:var(--teal);border-radius:20px;margin-top:4px;font-weight:600">● Active</div>
+        </div>
+        <div style="background:var(--teal);border-radius:8px;padding:12px;margin-bottom:10px">
+          <div style="font-size:10px;margin-bottom:2px;opacity:0.8">Available for discounting</div>
+          <div style="font-size:20px;font-weight:700">₹0</div>
+          <div style="font-size:10px;opacity:0.8;margin-top:4px">Upload your first invoice to start</div>
+        </div>
+        <div class="wf-btn">Upload Invoice →</div>
+        <div class="wf-btn secondary" style="margin-top:6px">View transactions</div>
+      </div>
+      <div class="wf-caption"><div class="wf-cap-title">9. Post-approval dashboard</div><div class="wf-cap-sub">Active status confirmed. CTA to upload first invoice immediately.</div></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Wireframe Modals -->
+<div class="modal-overlay" id="modal-container" onclick="closeModal(event)">
+  <div class="modal-box" style="position:relative" id="modal-content">
+    <button class="modal-close" onclick="closeAllModals()">×</button>
+    <div id="modal-body"></div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     TAB 4: PROTOTYPE
+══════════════════════════════════════════ -->
+<div id="tab-proto" class="tab-content">
+<div class="proto-shell">
+  <div class="proto-sidebar">
+    <h4>Onboarding Steps</h4>
+    <div class="proto-step-item active" id="psi-0" onclick="gotoScreen(0)">
+      <div class="step-icon">1</div><div class="proto-step-label">Welcome</div>
+    </div>
+    <div class="proto-step-item" id="psi-1" onclick="gotoScreen(1)">
+      <div class="step-icon">2</div><div class="proto-step-label">Mobile OTP</div>
+    </div>
+    <div class="proto-step-item" id="psi-2" onclick="gotoScreen(2)">
+      <div class="step-icon">3</div><div class="proto-step-label">Consent</div>
+    </div>
+    <div class="proto-step-item" id="psi-3" onclick="gotoScreen(3)">
+      <div class="step-icon">4</div><div class="proto-step-label">Business details</div>
+    </div>
+    <div class="proto-step-item" id="psi-4" onclick="gotoScreen(4)">
+      <div class="step-icon">5</div><div class="proto-step-label">Identity (KYC)</div>
+    </div>
+    <div class="proto-step-item" id="psi-5" onclick="gotoScreen(5)">
+      <div class="step-icon">6</div><div class="proto-step-label">Bank account</div>
+    </div>
+    <div class="proto-step-item" id="psi-6" onclick="gotoScreen(6)">
+      <div class="step-icon">7</div><div class="proto-step-label">Review &amp; sign</div>
+    </div>
+    <div class="proto-step-item" id="psi-7" onclick="gotoScreen(7)">
+      <div class="step-icon">8</div><div class="proto-step-label">Submitted!</div>
+    </div>
+  </div>
+
+  <div class="proto-main">
+    <div class="phone-frame">
+      <div class="phone-notch">
+        <div class="notch"><div class="notch-dot"></div><div class="notch-dot"></div></div>
+      </div>
+      <div class="phone-body">
+
+        <!-- SCREEN 0: WELCOME -->
+        <div class="proto-screen active" id="ps-0">
+          <div style="text-align:center;padding:24px 0 20px">
+            <div style="font-size:32px;font-weight:700;color:var(--teal);letter-spacing:-1px">kred<span style="color:var(--white)">X</span></div>
+            <div style="font-size:9px;letter-spacing:2px;color:var(--muted);margin-top:2px">DTX PLATFORM</div>
+          </div>
+          <div class="proto-hdr" style="text-align:center">
+            <h3>Get paid faster on your invoices</h3>
+            <p>No branch visit. No document scanning. Most MSMEs done in under 20 minutes.</p>
+          </div>
+          <div class="proto-info-box">
+            <p>📋 You'll need: your <strong>Business PAN</strong> and your <strong>Udyam number</strong>. That's it — we'll fetch everything else automatically from government databases.</p>
+          </div>
+          <div class="proto-cta">
+            <button class="proto-btn" onclick="gotoScreen(1)">Get started →</button>
+          </div>
+        </div>
+
+        <!-- SCREEN 1: OTP -->
+        <div class="proto-screen" id="ps-1">
+          <div class="proto-progress-bar"><div class="proto-progress-fill" style="width:12%"></div></div>
+          <div class="proto-hdr">
+            <h3>Verify your mobile</h3>
+            <p>We'll send a 6-digit code. This keeps your account secure.</p>
+          </div>
+          <div class="proto-field">
+            <label>Mobile number</label>
+            <input type="tel" placeholder="98765 43210" id="inp-mobile">
+          </div>
+          <div class="proto-info-box">
+            <p>📍 Why we need this: RBI requires us to verify your contact details before opening any financial account. Reference: <a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=11566" target="_blank">§16 KYC MD</a></p>
+          </div>
+          <div class="proto-cta">
+            <button class="proto-btn" onclick="gotoScreen(2)">Send OTP →</button>
+            <button class="proto-btn secondary" onclick="gotoScreen(0)">← Back</button>
+          </div>
+        </div>
+
+        <!-- SCREEN 2: CONSENT -->
+        <div class="proto-screen" id="ps-2">
+          <div class="proto-progress-bar"><div class="proto-progress-fill" style="width:25%"></div></div>
+          <div class="proto-hdr">
+            <h3>We need your permission</h3>
+            <p>To verify your business quickly, we need to check these government databases.</p>
+          </div>
+          <div class="consent-item">
+            <div class="consent-toggle"></div>
+            <div class="consent-text"><strong>Udyam &amp; GSTN</strong> — Verify your MSME registration &amp; tax filing status. <a href="https://udyamregistration.gov.in/" target="_blank">Udyam portal</a></div>
+          </div>
+          <div class="consent-item">
+            <div class="consent-toggle"></div>
+            <div class="consent-text"><strong>PAN database</strong> — Verify your business identity. <a href="https://www.incometaxindia.gov.in/" target="_blank">ITD website</a></div>
+          </div>
+          <div class="consent-item">
+            <div class="consent-toggle"></div>
+            <div class="consent-text"><strong>CKYC Registry (CERSAI)</strong> — Check if your ID is already verified by your bank. <a href="https://www.ckycindia.in/" target="_blank">CKYC portal</a> · <a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=11566" target="_blank">§56 KYC MD</a></div>
+          </div>
+          <div class="consent-item">
+            <div class="consent-toggle"></div>
+            <div class="consent-text"><strong>Aadhaar / UIDAI</strong> — Verify identity via OTP if CKYC not found. <a href="https://uidai.gov.in/" target="_blank">UIDAI</a> · <a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=11566" target="_blank">§18(b) KYC MD</a></div>
+          </div>
+          <div class="proto-cta">
+            <button class="proto-btn" onclick="gotoScreen(3)">I agree, continue →</button>
+            <button class="proto-btn secondary" onclick="gotoScreen(1)">← Back</button>
+          </div>
+        </div>
+
+        <!-- SCREEN 3: BUSINESS DETAILS -->
+        <div class="proto-screen" id="ps-3">
+          <div class="proto-progress-bar"><div class="proto-progress-fill" style="width:42%"></div></div>
+          <div class="proto-hdr">
+            <h3>Your business details</h3>
+            <p>Enter two numbers — we do the rest automatically.</p>
+          </div>
+          <div class="proto-field">
+            <label>Business PAN (10 characters)</label>
+            <input type="text" placeholder="e.g. AABCT1234Z" id="inp-pan" maxlength="10" oninput="this.value=this.value.toUpperCase()">
+          </div>
+          <div class="proto-field">
+            <label>Udyam Registration Number</label>
+            <input type="text" placeholder="e.g. UDYAM-MH-01-0012345" id="inp-udyam">
+          </div>
+          <div class="proto-info-box">
+            <p>🔍 After you tap Continue, we'll automatically check: business name, type, GST status, MSME classification, and registered address — from government databases. No uploads needed.</p>
+          </div>
+          <div class="proto-cta">
+            <button class="proto-btn" onclick="simulateFetch()">Verify my business →</button>
+            <button class="proto-btn secondary" onclick="gotoScreen(2)">← Back</button>
+          </div>
+        </div>
+
+        <!-- SCREEN 4: KYC -->
+        <div class="proto-screen" id="ps-4">
+          <div class="proto-progress-bar"><div class="proto-progress-fill" style="width:58%"></div></div>
+          <div class="proto-hdr">
+            <h3>Verify who you are</h3>
+            <p>RBI requires us to confirm the identity of the person running this account. We try the fastest method first.</p>
+          </div>
+          <div class="waterfall-step">
+            <div class="wf-num active">1</div>
+            <div class="wf-step-body">
+              <div class="wf-step-title">Check CKYC (from your bank records)</div>
+              <div class="wf-step-desc">Enter your 14-digit CKYC ID or PAN + date of birth. If your bank already verified you, this takes 30 seconds. <a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=11566" target="_blank" style="font-size:10px;color:var(--teal)">§56 KYC MD</a></div>
+            </div>
+          </div>
+          <div class="proto-field" style="margin-top:8px">
+            <label>CKYC ID (14 digits) or leave blank to try Aadhaar OTP</label>
+            <input type="text" placeholder="e.g. 50012345678901" id="inp-ckyc" maxlength="14">
+          </div>
+          <div style="text-align:center;font-size:11px;color:var(--muted);margin:8px 0">— or —</div>
+          <div class="waterfall-step" style="border:none">
+            <div class="wf-num">2</div>
+            <div class="wf-step-body">
+              <div class="wf-step-title">Aadhaar OTP (if CKYC not found)</div>
+              <div class="wf-step-desc">OTP sent to your Aadhaar-linked mobile. Takes 1–2 minutes. <a href="https://uidai.gov.in/" target="_blank" style="font-size:10px;color:var(--teal)">UIDAI</a> · <a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=11566" target="_blank" style="font-size:10px;color:var(--teal)">§18(b)</a></div>
+            </div>
+          </div>
+          <div class="proto-cta">
+            <button class="proto-btn" onclick="gotoScreen(5)">Verify identity →</button>
+            <button class="proto-btn secondary" onclick="gotoScreen(3)">← Back</button>
+          </div>
+        </div>
+
+        <!-- SCREEN 5: BANK -->
+        <div class="proto-screen" id="ps-5">
+          <div class="proto-progress-bar"><div class="proto-progress-fill" style="width:76%"></div></div>
+          <div class="proto-hdr">
+            <h3>Link your bank account</h3>
+            <p>This is where KredX sends money when invoices are paid. We'll verify it by sending ₹1 to confirm it's yours.</p>
+          </div>
+          <div class="proto-field">
+            <label>Account number</label>
+            <input type="text" placeholder="e.g. 001234567890" id="inp-acc">
+          </div>
+          <div class="proto-field">
+            <label>IFSC code</label>
+            <input type="text" placeholder="e.g. HDFC0001234" id="inp-ifsc" maxlength="11" oninput="this.value=this.value.toUpperCase()">
+          </div>
+          <div class="proto-info-box">
+            <p>💡 <strong>Why 3-way verification?</strong> We cross-check your bank name against (1) your PAN records and (2) the bank account on your Udyam certificate. This is the RBI's primary requirement for TReDS sellers. <a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=12163" target="_blank">TReDS MD 2021</a></p>
+          </div>
+          <div class="proto-cta">
+            <button class="proto-btn" onclick="simulateBank()">Verify bank account →</button>
+            <button class="proto-btn secondary" onclick="gotoScreen(4)">← Back</button>
+          </div>
+        </div>
+
+        <!-- SCREEN 6: REVIEW -->
+        <div class="proto-screen" id="ps-6">
+          <div class="proto-progress-bar"><div class="proto-progress-fill" style="width:90%"></div></div>
+          <div class="proto-hdr">
+            <h3>Review &amp; sign</h3>
+            <p>Check everything below. You'll sign this with your Aadhaar OTP.</p>
+          </div>
+          <div style="background:var(--bg3);border-radius:8px;padding:10px;margin-bottom:10px">
+            <div class="review-row"><span class="key">Business</span><span class="val">XYZ Textiles Pvt Ltd</span></div>
+            <div class="review-row"><span class="key">PAN verified</span><span class="val" style="color:var(--teal)">✓ AABCT1234Z</span></div>
+            <div class="review-row"><span class="key">Risk rating</span><span class="val" style="color:var(--teal)">✓ Low Risk</span></div>
+            <div class="review-row"><span class="key">Bank account</span><span class="val" style="color:var(--teal)">✓ HDFC xxxx7890</span></div>
+            <div class="review-row" style="border:none"><span class="key">Identity</span><span class="val" style="color:var(--teal)">✓ CKYC verified</span></div>
+          </div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:8px">By signing, you confirm that:</div>
+          <div class="wf-check"><div class="wf-check-dot">✓</div><div class="wf-check-txt">All uploaded invoices are real trade invoices</div></div>
+          <div class="wf-check"><div class="wf-check-dot">✓</div><div class="wf-check-txt">No invoice will be financed twice</div></div>
+          <div class="wf-check"><div class="wf-check-dot">✓</div><div class="wf-check-txt">All payments will go to the verified bank account</div></div>
+          <div class="proto-cta">
+            <button class="proto-btn" onclick="gotoScreen(7)">Sign with Aadhaar OTP →</button>
+            <button class="proto-btn secondary" onclick="gotoScreen(5)">← Back</button>
+          </div>
+        </div>
+
+        <!-- SCREEN 7: DONE -->
+        <div class="proto-screen" id="ps-7">
+          <div class="proto-progress-bar"><div class="proto-progress-fill" style="width:100%;background:var(--teal)"></div></div>
+          <div class="success-anim" style="margin-top:20px">
+            <div class="success-circle">✓</div>
+            <div class="success-title">Application submitted!</div>
+            <p class="success-sub">Your business is Low Risk. You'll receive an approval SMS and email within 2 hours. Once approved, you can upload your first invoice immediately.</p>
+          </div>
+          <div style="background:var(--bg3);border-radius:8px;padding:10px;margin-top:14px">
+            <div class="wf-check"><div class="wf-check-dot">✓</div><div class="wf-check-txt">Confirmation sent to your email and mobile</div></div>
+            <div class="wf-check"><div class="wf-check-dot">✓</div><div class="wf-check-txt">Reference: DTX-2026-087432</div></div>
+            <div class="wf-check"><div class="wf-check-dot">✓</div><div class="wf-check-txt">KYC records stored securely for 10 years (low risk)</div></div>
+          </div>
+          <div class="proto-cta" style="margin-top:16px">
+            <button class="proto-btn secondary" onclick="resetProto()">← Start over (demo)</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="proto-right">
+    <div id="proto-time-box" class="time-indicator">
+      <div class="time-icon">⏱</div>
+      <div class="time-text" id="proto-time">Step 1 of 8</div>
+    </div>
+    <h4>RBI References</h4>
+    <div id="proto-refs"></div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════ JS ══════════════════════ -->
+<script>
+// ─── TAB SWITCHING ───
+function switchTab(name, btn) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ─── SLIDES ───
+let currentSlide = 0;
+const totalSlides = 10;
+function buildDots() {
+  const dc = document.getElementById('dots');
+  dc.innerHTML = '';
+  for(let i=0;i<totalSlides;i++){
+    const d = document.createElement('div');
+    d.className = 'dot' + (i===currentSlide?' on':'');
+    d.onclick = ()=>goSlide(i);
+    dc.appendChild(d);
+  }
+}
+function goSlide(n) {
+  document.querySelectorAll('.slide').forEach(s=>s.classList.remove('active'));
+  currentSlide = Math.max(0, Math.min(totalSlides-1, n));
+  document.getElementById('slide-'+currentSlide).classList.add('active');
+  buildDots();
+}
+function nextSlide(){goSlide(currentSlide+1)}
+function prevSlide(){goSlide(currentSlide-1)}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowDown')nextSlide();if(e.key==='ArrowLeft'||e.key==='ArrowUp')prevSlide()});
+buildDots();
+
+// ─── WIREFRAME MODALS ───
+const modalData = {
+  m1:{title:'Screen 1 — Welcome',content:`<p><strong>Purpose:</strong> Entry point. MSME lands here from an invitation link (anchor referral) or direct sign-up.</p><p style="margin-top:8px"><strong>Design decisions:</strong></p><ul><li>Value proposition in plain English — "Get paid faster on your invoices" not "Invoice Discounting Platform"</li><li>Explicit time expectation — "under 20 minutes" reduces anxiety and sets honest expectations</li><li>"No document uploads" addresses the #1 reason MSMEs historically dropped off</li><li>Single CTA — no choice paralysis</li></ul><p style="margin-top:8px"><strong>Regulatory compliance:</strong> No data is collected on this screen. No consent required yet. Per <a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=11566" target="_blank" style="color:var(--teal)">§16 KYC MD</a>, we cannot create an account or collect data without first establishing the user's contact details and intent.</p>`},
+  m2:{title:'Screen 2 — Mobile OTP',content:`<p><strong>Purpose:</strong> Verify the mobile number. Creates the user session. Sends save-and-resume link.</p><p style="margin-top:8px"><strong>Design decisions:</strong></p><ul><li>Large individual OTP digit boxes — easier on mobile than a single 6-digit input</li><li>First digit auto-moves focus to next box — reduces typing friction</li><li>Auto-read SMS OTP on Android — user may not even need to type</li><li>"Resend in 28 seconds" manages impatience without enabling spam</li></ul><p style="margin-top:8px"><strong>What happens in the background:</strong> Session token is created. Unique save-and-resume link is sent via email (collected in next screen). If user drops off, they can continue from any device using this link — valid for 30 days.</p><p style="margin-top:8px"><strong>Regulatory compliance:</strong> Phone verification is the foundation of the Customer Acceptance Policy. Reference: <a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=11566" target="_blank" style="color:var(--teal)">§16 KYC MD</a></p>`},
+  m3:{title:'Screen 3 — Consent',content:`<p><strong>Purpose:</strong> Obtain explicit, granular digital consent before calling any government API.</p><p style="margin-top:8px"><strong>Why this is legally critical:</strong> Without explicit consent, every API call downstream is impermissible — whether under the Digital Personal Data Protection (DPDP) Act or under <a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=11566" target="_blank" style="color:var(--teal)">§18(b) of the KYC Master Direction</a>.</p><p style="margin-top:8px"><strong>Design decisions:</strong></p><ul><li>Each API is listed by name with a plain-language explanation — not "we access third-party data" (too vague)</li><li>All toggles are ON by default (common in regulated financial apps — the MSME must actively opt out, not opt in)</li><li>Each toggle includes a source link so a curious user can verify what that database is</li></ul><p style="margin-top:8px"><strong>Consent is logged with:</strong> Timestamp, IP address, session ID, version of consent text. This creates an auditable trail for regulators.</p>`},
+  m4:{title:'Screen 4 — Business details',content:`<p><strong>Purpose:</strong> Collect two identifiers; auto-fetch everything else.</p><p style="margin-top:8px"><strong>The fundamental design insight:</strong> The legacy approach was: "please upload your GST certificate, your incorporation certificate, your partnership deed..." The new approach: give us your PAN and Udyam number, and we go get everything else from government databases.</p><p style="margin-top:8px"><strong>What gets auto-filled from these two inputs:</strong></p><ul><li>Business name (from <a href="https://www.incometaxindia.gov.in/" target="_blank" style="color:var(--teal)">ITD PAN API</a>)</li><li>Entity type (Pvt Ltd / LLP / Partnership / Proprietorship) — this drives all downstream branching</li><li>MSME classification — Micro/Small/Medium (from <a href="https://udyamregistration.gov.in/" target="_blank" style="color:var(--teal)">Udyam API</a>)</li><li>Industry NIC codes — used for risk scoring</li><li>Registered address and bank account reference (from Udyam API)</li><li>GST status and compliance history (from <a href="https://www.gstn.org.in/" target="_blank" style="color:var(--teal)">GSTN API</a>)</li></ul><p style="margin-top:8px"><strong>Fuzzy matching:</strong> Business name from PAN is cross-checked against Udyam and GSTN. 85%+ confidence = auto-proceed. 70–84% = manual review. Below 70% = rejected. Thresholds are configurable.</p>`},
+  m5:{title:'Screen 5 — Identity verification waterfall',content:`<p><strong>Purpose:</strong> Verify the identity of the person running the account (proprietor, director, partner).</p><p style="margin-top:8px"><strong>The waterfall approach — why?</strong></p><p>Not everyone has the same digital footprint. The RBI allows multiple verification methods. We try the fastest, least-friction method first and only move to a harder method if the previous one fails.</p><ul><li><strong>Level 1 — CKYC (30 sec):</strong> If the person's bank already verified them, we fetch that record. Zero documents. Per <a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=11566" target="_blank" style="color:var(--teal)">§56 KYC MD</a>, checking CKYC first is not optional — it's required.</li><li><strong>Level 2 — Aadhaar OTP (1–2 min):</strong> OTP to Aadhaar-linked mobile. Fast and paperless. Per <a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=11566" target="_blank" style="color:var(--teal)">§18(b) KYC MD</a>.</li><li><strong>Level 3 — OVD Upload (3–5 min):</strong> Camera photo of Passport/DL/Voter ID + AI liveness check.</li><li><strong>Level 4 — Video KYC (scheduled):</strong> Live video call with a trained KredX officer. GPS-tagged. Per strict <a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=11566" target="_blank" style="color:var(--teal)">§18A KYC MD</a> requirements. No mandatory facial gestures (2025 PwD update).</li></ul><p style="margin-top:8px"><strong>For Pvt Ltd with multiple directors:</strong> All directors receive simultaneous KYC links. Clock runs in parallel, not sequentially.</p>`},
+  m6:{title:'Screen 6 — Bank account validation',content:`<p><strong>Purpose:</strong> Confirm the bank account belongs to the MSME. This is the RBI's primary focus for TReDS per the <a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=12163" target="_blank" style="color:var(--teal)">2026 Draft TReDS Directions</a>.</p><p style="margin-top:8px"><strong>How penny drop works:</strong></p><ol style="padding-left:16px"><li>User enters account number + IFSC</li><li>We send ₹1 via IMPS</li><li>The destination bank's core banking system returns the account holder's name</li><li>We fuzzy-match that name against the entity name from PAN</li><li>We also cross-check against the bank account registered on the Udyam certificate (a 3-way validation)</li></ol><p style="margin-top:8px"><strong>Why 3-way, not just penny drop?</strong> Penny drop alone can be fooled if someone controls a bank account in a similar name. The Udyam bank account field gives us a government-registered reference point. Most implementations miss this step.</p><p style="margin-top:8px"><strong>Optional enhancement — Account Aggregator:</strong> User can optionally share their bank statement data via <a href="https://sahamati.org.in/" target="_blank" style="color:var(--teal)">Account Aggregator</a>. This is not a gate — it's an incentive (better financing rates from lenders who see clean cash flows).</p>`},
+  m7:{title:'Screen 7 — Review & eSign',content:`<p><strong>Purpose:</strong> Show the MSME everything we've collected, let them correct any errors, and execute the legal agreement.</p><p style="margin-top:8px"><strong>Three mandatory undertakings (per <a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=12163" target="_blank" style="color:var(--teal)">2026 Draft TReDS Directions</a>):</strong></p><ol style="padding-left:16px"><li>Invoices are genuine trade invoices (not fabricated)</li><li>No invoice will be submitted for financing on any other platform (no double-financing)</li><li>All payments will go to the verified bank account declared in this application</li></ol><p style="margin-top:8px"><strong>eSign options:</strong></p><ul><li><strong>Aadhaar eSign (preferred):</strong> OTP to Aadhaar-linked mobile. Legally valid under IT Act §5. Instant.</li><li><strong>DSC (Digital Signature Certificate):</strong> For companies whose authorized signatory has a DSC. Takes longer.</li><li><strong>Physical wet signature:</strong> Last resort only. Adds 2–3 days. Not promoted.</li></ul><p style="margin-top:8px"><strong>What if the user wants to correct something?</strong> Any field can be edited from this screen. Editing a field that came from an API triggers a re-verification of that specific field — not the entire flow.</p>`},
+  m8:{title:'Screen 8 — Submitted!',content:`<p><strong>Purpose:</strong> Confirm submission, set expectations for what happens next, and reduce anxiety.</p><p style="margin-top:8px"><strong>What happens immediately after submission:</strong></p><ol style="padding-left:16px"><li>Automated risk scoring runs (NIC code + GST history + sanctions screening + PEP check)</li><li>Low risk + all API confidence scores pass → auto-approved in &lt;2 hours. MSME never waits for a human.</li><li>Medium risk → compliance review queue. Target: 4–8 hours. MSME gets an SMS when done.</li><li>High risk → enhanced due diligence, manual review. Target: 24–48 hours.</li></ol><p style="margin-top:8px"><strong>Per <a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=11566" target="_blank" style="color:var(--teal)">§17 KYC MD</a>:</strong> The level of verification must be proportional to the risk. Auto-approval for low-risk MSMEs is therefore not cutting corners — it is the regulatorily correct approach.</p><p style="margin-top:8px"><strong>Reference number:</strong> Displayed prominently for support queries. Sent via email and SMS. Stored for audit trail.</p>`},
+  m9:{title:'Screen 9 — Dashboard (post-activation)',content:`<p><strong>Purpose:</strong> First screen an approved MSME sees. Clear status, clear next action.</p><p style="margin-top:8px"><strong>Key information shown:</strong></p><ul><li><strong>Active status badge:</strong> The green "Active" pill immediately reassures the MSME their account is live</li><li><strong>Available for discounting: ₹0</strong> — Honest. This changes once the first invoice is uploaded and a financier bids.</li><li><strong>Primary CTA — Upload Invoice:</strong> This is the only action that matters right now</li></ul><p style="margin-top:8px"><strong>What is not shown on the first-day dashboard:</strong></p><ul><li>Complex portfolio analytics (they have no invoices yet)</li><li>Historical transaction charts (no history yet)</li><li>Detailed risk score (not relevant to them)</li></ul><p style="margin-top:8px"><strong>Periodic KYC reminder logic (runs in background):</strong> Per <a href="https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=11566" target="_blank" style="color:var(--teal)">§38 KYC MD</a>, KYC must be refreshed every 10 years (low risk), 8 years (medium), or 2 years (high risk). System automatically sends reminders at 90, 60, and 30 days before expiry. If not renewed, account is restricted from new invoice uploads.</p>`}
+};
+
+function openModal(id) {
+  const d = modalData[id];
+  if(!d) return;
+  document.getElementById('modal-body').innerHTML = `<h3 style="margin-bottom:12px">${d.title}</h3>${d.content}`;
+  document.getElementById('modal-container').classList.add('open');
+}
+function closeModal(e) {
+  if(e.target === document.getElementById('modal-container')) closeAllModals();
+}
+function closeAllModals() {
+  document.getElementById('modal-container').classList.remove('open');
+}
+
+// ─── PROTOTYPE ───
+const protoRefs = [
+  {title:'Welcome',time:'Step 1 of 8',refs:[]},
+  {title:'Mobile OTP',time:'~30 seconds',refs:[{t:'§16 KYC MD — Customer Acceptance Policy',d:'No data collected before phone verification.',u:'https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=11566'}]},
+  {title:'Consent',time:'~1 minute',refs:[{t:'§18(b) KYC MD — Aadhaar eKYC consent',d:'Explicit consent required before any Aadhaar API call.',u:'https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=11566'},{t:'DPDP Act',d:'Each API must be named, purpose stated.',u:'https://www.meity.gov.in/data-protection-framework'}]},
+  {title:'Business verification',time:'~2–3 minutes',refs:[{t:'§19–33 KYC MD — Legal entity KYC',d:'Entity documents and proof of existence required.',u:'https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=11566'},{t:'TReDS MD 2021 — Udyam mandatory',d:'Only Udyam-registered MSMEs eligible for TReDS.',u:'https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=12163'}]},
+  {title:'Identity KYC',time:'~30 sec – 2 min',refs:[{t:'§56 KYC MD — CKYC must be checked first',d:'Check CKYC registry before initiating fresh KYC.',u:'https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=11566'},{t:'§18(b) — Aadhaar eKYC',d:'Second option if CKYC not found.',u:'https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=11566'},{t:'§18A — V-CIP rules',d:'Video KYC as final fallback. Strict infrastructure rules.',u:'https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=11566'}]},
+  {title:'Bank validation',time:'~60 seconds',refs:[{t:'TReDS MD 2021 — Fund destination',d:'Funds must go to verified MSME bank account only.',u:'https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=12163'},{t:'Draft TReDS Directions 2026',d:'Bank account validation is the primary compliance obligation for MSME sellers.',u:'https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=12163'}]},
+  {title:'Review & sign',time:'~2 minutes',refs:[{t:'§17 KYC MD — Risk categorisation',d:'Risk level determines approval speed.',u:'https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=11566'},{t:'Draft TReDS 2026 — 3 undertakings',d:'Genuine invoices, no double-financing, correct bank account.',u:'https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=12163'}]},
+  {title:'Submitted!',time:'Done in ~15–20 min',refs:[{t:'§38 KYC MD — Periodic refresh',d:'Low risk: 10 years. Medium: 8 years. High: 2 years.',u:'https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=11566'},{t:'§45 KYC MD — Record keeping',d:'All KYC records stored for minimum 5 years.',u:'https://www.rbi.org.in/Scripts/BS_ViewMasDirections.aspx?id=11566'}]}
+];
+
+let protoScreen = 0;
+function gotoScreen(n) {
+  document.querySelectorAll('.proto-screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.proto-step-item').forEach((s,i)=>{
+    s.classList.remove('active');
+    if(i < n) s.classList.add('done');
+    else s.classList.remove('done');
+  });
+  protoScreen = n;
+  const el = document.getElementById('ps-'+n);
+  if(el) el.classList.add('active');
+  const si = document.getElementById('psi-'+n);
+  if(si) si.classList.add('active');
+  const r = protoRefs[n];
+  if(r){
+    document.getElementById('proto-time').textContent = r.time;
+    const rb = document.getElementById('proto-refs');
+    rb.innerHTML = r.refs.length === 0 ? '<p style="font-size:11px;color:var(--muted)">No regulatory references for this step.</p>'
+      : r.refs.map(x=>`<div class="reg-ref"><h5>${x.t}</h5><p>${x.d}</p><a href="${x.u}" target="_blank">View on RBI website →</a></div>`).join('');
+  }
+}
+
+function simulateFetch() {
+  const btn = event.target;
+  btn.textContent = '🔍 Checking government databases...';
+  btn.disabled = true;
+  setTimeout(()=>{
+    btn.textContent = '✅ Verified! Continue →';
+    btn.disabled = false;
+    btn.onclick = ()=>gotoScreen(4);
+  }, 2000);
+}
+
+function simulateBank() {
+  const btn = event.target;
+  btn.textContent = '💸 Sending ₹1 to verify...';
+  btn.disabled = true;
+  setTimeout(()=>{
+    btn.textContent = '✅ Account verified! Continue →';
+    btn.disabled = false;
+    btn.onclick = ()=>gotoScreen(6);
+  }, 2200);
+}
+
+function resetProto() {
+  document.querySelectorAll('.proto-step-item').forEach(s=>{ s.classList.remove('active','done'); });
+  gotoScreen(0);
+}
+
+// init
+gotoScreen(0);
+</script>
+</body>
+</html>
