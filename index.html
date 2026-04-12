@@ -246,6 +246,17 @@ p.body{font-size:13px;line-height:1.7;color:rgba(240,244,242,0.8)}
 .time-icon{font-size:14px}
 .time-text{font-size:11px;color:var(--teal);font-weight:600}
 @media(max-width:768px){.grid2,.grid3,.grid4{grid-template-columns:1fr}.stat-grid{grid-template-columns:repeat(2,1fr)}.two-col{grid-template-columns:1fr}.wf-grid{grid-template-columns:1fr}.proto-shell{flex-direction:column}.proto-sidebar,.proto-right{width:100%;border:none}.proto-main{padding:16px}.phone-frame{width:100%;max-width:340px}}
+.copyright-notice {
+  position: fixed;
+  bottom: 12px;
+  right: 16px;
+  font-size: 10px;
+  color: var(--muted); 
+  font-family: var(--font);
+  z-index: 9999;
+  opacity: 0.8;
+  pointer-events: none; 
+}
 </style>
 </head>
 <body>
@@ -1331,5 +1342,6 @@ function resetProto() {
 // init
 gotoScreen(0);
 </script>
+  <div class="copyright-notice">© Nidhi Pawar</div>
 </body>
 </html>
